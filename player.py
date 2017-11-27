@@ -1,4 +1,4 @@
-#bbc_ca.py - BBC Radio 4 in CA
+# player.py - WIP player module as part of BBC Radio 4 CA project
 
 # Useful get_iplayer calls
 #  get_iplayer --type=radio --channel="Radio 4$" "^Today$" --sort available --listformat="<available> <name> - <pid>"

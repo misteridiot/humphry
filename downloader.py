@@ -1,4 +1,4 @@
-# bbc_downloader.py - downloading files for bbc_ca to play
+# downloader.py - downloading files for bbc_r4_ca project to play
 
 import json
 import datetime as dt

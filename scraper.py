@@ -1,4 +1,4 @@
-# bbc_scraper.py - scraping the BBC R4 schedule to fuel bbc_ca
+# scraper.py - scraping the BBC R4 schedule to fuel the downloader and player modules of the bbc_r4_ca project
 
 import urllib.request
 import datetime as dt
