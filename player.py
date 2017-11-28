@@ -6,45 +6,14 @@
 #  get_iplayer --type=radio --channel="Radio 4$" --available-since=6 --sort available --listformat="<available> <name> - <pid>" --get
 #  sudo amixer cset numid=3 1  //  0=auto, 2=headphones, 3=hdmi
 
-import json
 import subprocess
 import datetime as dt
 import time
 import RPi.GPIO as GPIO
-
-def set_date():
-# Get current year, month & day // used to define JSON file to be loaded 
-    year = str(dt.date.today().year)
-    month = "{0:0=2d}".format(dt.date.today().month)
-    day = "{0:0=2d}".format(dt.date.today().day)
-    return year, month, day
-
-def set_json_filename(year, month, day):
-# Define which JSON filename to read using today's date
-    filename = '/media/pi/Samsung USB/json/' + year + '-' + month + '-' + day + '.json'
-    return filename
-
-def load_json(filename):
-# Load JSON schedule file & convert XSD format keys to datetime() objects
-    schedule_dict = json.loads(filename)
-    for key in schedule_dict:
-        schedule_dict[convert_xsd(key)] = schedule_dict.pop(key)
-    return schedule_dict
-
-def convert_xsd(xsd):
-# Convert xsdDateTime string minus sub-second units into datetime() object
-    xsd = xsd[:-6]
-    date_time = dt.datetime.strptime(xsd, '%Y-%m-%dT%H:%M:%S')
-    return date_time
-
-def find_program(schedule_dict):
-# DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
-    prog = min(schedule_dict, key=lambda d: abs(d - dt.datetime.today())
-
-def find_play_time(schedule_dict):
-    
+import shared as sh
 
 def get_press():
+# Detect button press to toggle between play and stop states
     global play
     while True:
         if GPIO.input(switch_pin) == False:
@@ -52,6 +21,17 @@ def get_press():
             time.sleep(0.25)
             return play
 
+def find_program(schedule_dict):
+# STUB - find the right program file to play 
+# DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
+# prog = min(schedule_dict, key=lambda d: abs(d - dt.datetime.today())
+    play_file = min(filter(lambda d: dt.timedelta(dt.datetime.today()-d).total_seconds > 0,schedule_dict))
+    return play_file
+
+def find_play_time(schedule_dict):
+# STUB - find offset play time of selected file
+    return
+               
 class Radio:
     def __init__(self):
         pass
@@ -59,13 +39,13 @@ class Radio:
     def start(self, play_file, start_time):
         # play_file = '/media/pi/Samsung USB/radio/Drama_Graham_Greene_-_A_Burnt-Out_Case_-_1._Episode_1_b09fxr6b_original.m4a'
         # start_time = '00:10:00'
-        self.r = subprocess.Popen(['omxplayer', '-o', 'local', play_file, '--pos='+start_time], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print('Started')
-        
+        # --> self.r = subprocess.Popen(['omxplayer', '-o', 'local', play_file, '--pos='+start_time], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        pass
+    
     def stop(self):
-        subprocess.call(['killall', 'omxplayer.bin'])
-        print('Stopped')
-
+        # --> subprocess.call(['killall', 'omxplayer.bin'])
+        pass
+    
     def restart(self):
         self.start()
 
@@ -75,18 +55,24 @@ switch_pin = 23
 radio = Radio()
 GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-year, month, day = set_date()
-filename = set_json_filename(year, month, day)
-schedule_dict = load_json(filename)
+year, month, day = sh.set_date()
+print('Current date set')
+raw_schedule_dict = sh.load_json(year, month, day)
+print('JSON imported')
+schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
+print('Dict times converted:' ,len(schedule_dict), 'records')
 
 while True:
     if get_press() == True:
-        play_file = find_program()
-        start_time = find_start_time()
+        play_file = find_program(schedule_dict)
+        print('Found file to play:', play_file)
+        start_time = find_start_time(schedule_dict)
+        print('Found start time:', start_time)
         radio.start(play_file, start_time)
+        print('Started playing')
     else:
         radio.stop()
-
+        print('Stopped playing')
 ##
 ##
 
