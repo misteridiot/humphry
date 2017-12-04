@@ -24,8 +24,8 @@ def get_press():
 def find_program(schedule_dict):
 # STUB - find the right program file to play 
 # DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
-# prog = min(schedule_dict, key=lambda d: abs(d - dt.datetime.today())
-    play_file = min(filter(lambda d: dt.timedelta(dt.datetime.today()-d).total_seconds > 0,schedule_dict))
+# prog = min(schedule_dict, key=lambda d: abs(dt.datetime.today()-d))
+    play_file = min(schedule_dict)
     return play_file
 
 def find_play_time(schedule_dict):
@@ -66,7 +66,7 @@ while True:
     if get_press() == True:
         play_file = find_program(schedule_dict)
         print('Found file to play:', play_file)
-        start_time = find_start_time(schedule_dict)
+        start_time = find_play_time(schedule_dict)
         print('Found start time:', start_time)
         radio.start(play_file, start_time)
         print('Started playing')
