@@ -27,13 +27,15 @@ def build_schedule_dict(soup):
 # NB Datetimes kept in XSD format, need to be converted to datetime() objects when JSON is read.
 
     schedule_dict = {}
+    i=1
 
     for parent_tag in soup.find_all(typeof = 'BroadcastEvent'):
         start_time = parent_tag.find(property = 'startDate')['content']
         end_time = parent_tag.find(property = 'endDate')['content']
         pid = str(parent_tag.find(typeof = 'RadioEpisode')['data-pid'])
         prog_name = str(parent_tag.find(class_ = 'programme__title ').string)
-        schedule_dict[start_time] = {'PID': pid, 'NAME': prog_name, 'START_TIME': start_time, 'END_TIME': end_time}
+        schedule_dict[i] = {'PID': pid, 'NAME': prog_name, 'START_TIME': start_time, 'END_TIME': end_time}
+        i=i+1
 
     return schedule_dict
 

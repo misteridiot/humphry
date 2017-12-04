@@ -25,7 +25,8 @@ def find_program(schedule_dict):
 # STUB - find the right program file to play 
 # DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
 # prog = min(schedule_dict, key=lambda d: abs(dt.datetime.today()-d))
-    play_file = min(schedule_dict)
+# Returns latest record for some reason...
+    play_file = min(schedule_dict, key = lambda x: dt.datetime.today()-schedule_dict[x]['START_TIME'])
     return play_file
 
 def find_play_time(schedule_dict):

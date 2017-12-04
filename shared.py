@@ -24,9 +24,9 @@ def convert_dict_dates(raw_schedule_dict):
 # Convert XSD datestampts to datetime objects // try condition is due to it being an ordered dict and the loop catching already converted keys
 # MAYBE DELETE - not necessary, use index numbers as keys - depends on how the player finds the right file
     for key in raw_schedule_dict:
-        try:
-            datetime_key = dt.datetime.strptime(key[:19], '%Y-%m-%dT%H:%M:%S')
-            raw_schedule_dict[datetime_key] = raw_schedule_dict.pop(key)
-        except TypeError:
-            pass
+#         try:
+            raw_schedule_dict[key]['START_TIME'] = dt.datetime.strptime(raw_schedule_dict[key]['START_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
+            raw_schedule_dict[key]['END_TIME'] = dt.datetime.strptime(raw_schedule_dict[key]['END_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
+#         except TypeError:
+#             pass
     return raw_schedule_dict
