@@ -5,7 +5,7 @@ import shared as sh
 
 def get_record_times(year, month, day):
 # Parse arguments from CLI cron call, for now hard code
-    rec_start_time = dt.datetime(int(year), int(month), int(day), 5, 30, 0, 0)
+    rec_start_time = dt.datetime(int(year), int(month), int(day), 8, 0, 0, 0)
     rec_end_time = dt.datetime(int(year), int(month), int(day), 10, 0, 0, 0)
 
     return rec_start_time, rec_end_time

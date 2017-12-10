@@ -21,13 +21,20 @@ def get_press():
             time.sleep(0.25)
             return play
 
+def list_programs(schedule_dict):
+    i = 1
+    while i <= len(schedule_dict):
+        print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'])
+        i += 1
+
 def find_program(schedule_dict):
 # STUB - find the right program file to play 
 # DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
-# prog = min(schedule_dict, key=lambda d: abs(dt.datetime.today()-d))
-# Returns latest record for some reason...
-    play_file = min(schedule_dict, key = lambda x: dt.datetime.today()-schedule_dict[x]['START_TIME'])
-    return play_file
+# Replace lambda with separate function as key
+    play_file_index = min(schedule_dict, key = lambda x: dt.datetime.today()-schedule_dict[x]['START_TIME'] if schedule_dict[x]['START_TIME']<dt.datetime.today() else dt.timedelta.max)
+    play_file = schedule_dict[play_file_index]['NAME'] # Replace with media filename
+    start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME'] # convert this to hr, min, sec for omxplayer
+    return play_file,start_time
 
 def find_play_time(schedule_dict):
 # STUB - find offset play time of selected file
@@ -65,9 +72,9 @@ print('Dict times converted:' ,len(schedule_dict), 'records')
 
 while True:
     if get_press() == True:
-        play_file = find_program(schedule_dict)
+        list_programs(schedule_dict)
+        play_file, start_time = find_program(schedule_dict)
         print('Found file to play:', play_file)
-        start_time = find_play_time(schedule_dict)
         print('Found start time:', start_time)
         radio.start(play_file, start_time)
         print('Started playing')
