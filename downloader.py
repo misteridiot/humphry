@@ -2,11 +2,12 @@
 
 import datetime as dt
 import shared as sh
+import subprocess
 
 def get_record_times(year, month, day):
 # Parse arguments from CLI cron call, for now hard code
-    rec_start_time = dt.datetime(int(year), int(month), int(day), 8, 0, 0, 0)
-    rec_end_time = dt.datetime(int(year), int(month), int(day), 10, 0, 0, 0)
+    rec_start_time = dt.datetime(int(year), int(month), int(day), 18, 0, 0, 0)
+    rec_end_time = dt.datetime(int(year), int(month), int(day), 19, 0, 0, 0)
 
     return rec_start_time, rec_end_time
 
@@ -14,8 +15,8 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
 # Read PIDs between rec start & end times, add to download_list
     download_list = []
     for key in schedule_dict:
-        start_time = dt.datetime.strptime(schedule_dict[key]['START_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
-        end_time = dt.datetime.strptime(schedule_dict[key]['END_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
+        start_time = schedule_dict[key]['START_TIME']
+        end_time = schedule_dict[key]['END_TIME']
         if (start_time <= rec_start_time and end_time > rec_start_time) or (start_time > rec_start_time and start_time < rec_end_time):
             download_list.append(schedule_dict[key]['PID'])
             print(start_time, end_time, schedule_dict[key]['NAME'], schedule_dict[key]['PID'])
@@ -24,8 +25,23 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
     return download_list
 
 def init_download(download_list):
-# STUB - tell get_iplayer to record PIDs
+# Tell get_iplayer to record PIDs
+    download_str = ','.join(download_list)
+    for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--force']):
+        print(path, end="")
+    # download_proc = subprocess.Popen([, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # download_proc.communicate()
+    # TO DO: Add error/output logging
     return
+
+def execute(cmd):
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+    for stdout_line in iter(popen.stdout.readline, ""):
+        yield stdout_line 
+    popen.stdout.close()
+    return_code = popen.wait()
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, cmd)
 
 year, month, day = sh.set_date()
 print('Current date set')

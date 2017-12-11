@@ -32,13 +32,19 @@ def find_program(schedule_dict):
 # DECIDE HOW TO NAME MEDIA FILES, RETURN THAT NAME - PID & NAME?
 # Replace lambda with separate function as key
     play_file_index = min(schedule_dict, key = lambda x: dt.datetime.today()-schedule_dict[x]['START_TIME'] if schedule_dict[x]['START_TIME']<dt.datetime.today() else dt.timedelta.max)
-    play_file = schedule_dict[play_file_index]['NAME'] # Replace with media filename
-    start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME'] # convert this to hr, min, sec for omxplayer
+    play_file = schedule_dict[play_file_index]['PID']+'.m4a'
+    start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME']
+    start_time = format_start_time(start_time)
     return play_file,start_time
 
-def find_play_time(schedule_dict):
-# STUB - find offset play time of selected file
-    return
+def format_start_time(timedelta):
+    seconds = timedelta.total_seconds()
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+    # TO DO move below line to def get_start_time() making this a generic timedelta converter function
+    formatted_timedelta = "%02d" % (hours)+':'+ "%02d" % (minutes)+':'+ "%02d" % (seconds)
+    return formatted_timedelta
                
 class Radio:
     def __init__(self):
@@ -47,11 +53,11 @@ class Radio:
     def start(self, play_file, start_time):
         # play_file = '/media/pi/Samsung USB/radio/Drama_Graham_Greene_-_A_Burnt-Out_Case_-_1._Episode_1_b09fxr6b_original.m4a'
         # start_time = '00:10:00'
-        # --> self.r = subprocess.Popen(['omxplayer', '-o', 'local', play_file, '--pos='+start_time], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.r = subprocess.Popen(['omxplayer', '-o', 'local', '/media/pi/Samsung USB/radio/'+play_file, '--pos='+start_time], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pass
     
     def stop(self):
-        # --> subprocess.call(['killall', 'omxplayer.bin'])
+        subprocess.call(['killall', 'omxplayer.bin'])
         pass
     
     def restart(self):
