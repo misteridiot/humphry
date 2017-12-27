@@ -25,17 +25,23 @@ def list_programs(schedule_dict):
 # FOR DEBUGGING: list all progs in schedule_dict to check correct file is being played
     i = 1
     while i <= len(schedule_dict):
-        print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'])
+        print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'],schedule_dict[str(i)]['PID'])
         i += 1
 
 def find_program(schedule_dict):
 # Find the right program file to play 
-# TO DO: Replace lambda with separate function as key
-    play_file_index = min(schedule_dict, key = lambda x: dt.datetime.today()-schedule_dict[x]['START_TIME'] if schedule_dict[x]['START_TIME']<dt.datetime.today() else dt.timedelta.max)
+    play_file_index = min(schedule_dict, key = past_only_time_diff)
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME']
     start_time = format_start_time(start_time)
     return play_file,start_time
+
+def past_only_time_diff(i):
+# Key function to return time difference between a past START_TIME and now (future START_TIMEs effectively ignored by maxing them) 
+    if schedule_dict[i]['START_TIME']<dt.datetime.today():
+        return dt.datetime.today()-schedule_dict[i]['START_TIME']
+    else:
+        return dt.timedelta.max
 
 def format_start_time(timedelta):
     seconds = timedelta.total_seconds()
@@ -68,7 +74,6 @@ switch_pin = 23
 GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 radio = Radio()
 play = False
-json_location = sh.json_location
 year, month, day = sh.set_date()
 print('Current date set')
 raw_schedule_dict = sh.load_json(year, month, day)
