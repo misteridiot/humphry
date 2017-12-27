@@ -43,12 +43,11 @@ def execute(command):
         raise subprocess.CalledProcessError(return_code, command)
 
 # Main -->
-json_location = sh.json_location
 year, month, day = sh.set_date()
 print('Current date set')
 rec_start_time, rec_end_time = get_record_times(year, month, day)
 print('Got record times')
-raw_schedule_dict = sh.load_json(year, month, day, json_location)
+raw_schedule_dict = sh.load_json(year, month, day)
 print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')

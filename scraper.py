@@ -31,14 +31,7 @@ def build_schedule_dict(soup):
 
     return schedule_dict
 
-def save_json(schedule_dict, year, month, day, save_location):
-# Dump schedule dict as a JSON file named with today's date, in the location specified in shared.py
-
-    with open(save_location + year + '-' + month + '-' + day + '.json', 'w') as file:
-        json.dump(schedule_dict, file, indent=4, sort_keys=True, separators=(',',': '))
-
 # Main -->
-save_location = sh.json_location
 year, month, day = sh.set_date()
 url = 'https://www.bbc.co.uk/schedules/p00fzl7j/' + year + '/' + month + '/' + day
 print(url)
@@ -46,5 +39,5 @@ soup = read_html(url)
 print('HTML parsed')
 schedule_dict = build_schedule_dict(soup)
 print('Dict complete:',len(schedule_dict), 'records')
-save_json(schedule_dict, year, month, day, save_location)
+sh.save_json(schedule_dict, year, month, day)
 print('JSON file saved')

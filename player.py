@@ -13,6 +13,7 @@ import shared as sh
 
 def get_press():
 # Detect button press to toggle between play and stop states
+# TO DO Find a way of capturing button presses that is more CPU efficient
     global play
     while True:
         if GPIO.input(switch_pin) == False:
