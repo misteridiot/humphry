@@ -3,6 +3,8 @@
 import datetime as dt
 import json
 
+json_location = '/media/pi/Samsung USB/json/'
+
 def set_date():
 # Get current year, month & day // used to define URL to be scraped
 # and name resulting JSON file, and to set rec start & end times 
@@ -13,20 +15,16 @@ def set_date():
 
     return year, month, day
 
-def load_json(year, month, day):
+def load_json(year, month, day, json_location):
 # Load JSON schedule file for today's date
-    filename = '/media/pi/Samsung USB/json/' + year + '-' + month + '-' + day + '.json'
+    filename = json_location + year + '-' + month + '-' + day + '.json'
     with open(filename) as file:
         raw_schedule_dict = json.load(file)
     return raw_schedule_dict
 
 def convert_dict_dates(raw_schedule_dict):
-# Convert XSD datestampts to datetime objects // try condition is due to it being an ordered dict and the loop catching already converted keys
-# MAYBE DELETE - not necessary, use index numbers as keys - depends on how the player finds the right file
+# Convert XSD datestamps in schedule dict to datetime objects
     for key in raw_schedule_dict:
-#         try:
             raw_schedule_dict[key]['START_TIME'] = dt.datetime.strptime(raw_schedule_dict[key]['START_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
             raw_schedule_dict[key]['END_TIME'] = dt.datetime.strptime(raw_schedule_dict[key]['END_TIME'][:19], '%Y-%m-%dT%H:%M:%S')
-#         except TypeError:
-#             pass
     return raw_schedule_dict

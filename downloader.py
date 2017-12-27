@@ -5,14 +5,15 @@ import shared as sh
 import subprocess
 
 def get_record_times(year, month, day):
-# Parse arguments from CLI cron call, for now hard code
-    rec_start_time = dt.datetime(int(year), int(month), int(day), 18, 0, 0, 0)
-    rec_end_time = dt.datetime(int(year), int(month), int(day), 19, 0, 0, 0)
+# Set recording start & end times, the UK schedule times between which all radio programs will be downloaded
+# TO DO: Parse arguments from CLI cron call, for now hard code
+    rec_start_time = dt.datetime(int(year), int(month), int(day), 9, 0, 0, 0)
+    rec_end_time = dt.datetime(int(year), int(month), int(day), 12, 0, 0, 0)
 
     return rec_start_time, rec_end_time
 
 def get_download_list(schedule_dict, rec_start_time, rec_end_time):
-# Read PIDs between rec start & end times, add to download_list
+# Read PIDs between recording start & end times, add to download_list
     download_list = []
     for key in schedule_dict:
         start_time = schedule_dict[key]['START_TIME']
@@ -20,8 +21,7 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
         if (start_time <= rec_start_time and end_time > rec_start_time) or (start_time > rec_start_time and start_time < rec_end_time):
             download_list.append(schedule_dict[key]['PID'])
             print(start_time, end_time, schedule_dict[key]['NAME'], schedule_dict[key]['PID'])
-    print(len(download_list))
-    print(download_list)
+    print(len(download_list), 'programs to download:', download_list)
     return download_list
 
 def init_download(download_list):
@@ -29,25 +29,26 @@ def init_download(download_list):
     download_str = ','.join(download_list)
     for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--force']):
         print(path, end="")
-    # download_proc = subprocess.Popen([, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    # download_proc.communicate()
     # TO DO: Add error/output logging
     return
 
-def execute(cmd):
-    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+def execute(command):
+# Execute subprocess, returning STDOUT line by line to br printed for debugging
+    popen = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
     for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line 
     popen.stdout.close()
     return_code = popen.wait()
     if return_code:
-        raise subprocess.CalledProcessError(return_code, cmd)
+        raise subprocess.CalledProcessError(return_code, command)
 
+# Main -->
+json_location = sh.json_location
 year, month, day = sh.set_date()
 print('Current date set')
 rec_start_time, rec_end_time = get_record_times(year, month, day)
 print('Got record times')
-raw_schedule_dict = sh.load_json(year, month, day)
+raw_schedule_dict = sh.load_json(year, month, day, json_location)
 print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
