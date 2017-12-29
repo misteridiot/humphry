@@ -11,6 +11,9 @@ import time
 import RPi.GPIO as GPIO
 import shared as sh
 
+audio_dir = '/media/pi/Samsung USB/radio/'
+switch_pin = 23
+
 def get_press():
 # Detect button press to toggle between play and stop states
 # TO DO Find a way of capturing button presses that is more CPU efficient
@@ -29,7 +32,7 @@ def list_programs(schedule_dict):
         i += 1
 
 def find_audio_file(schedule_dict):
-# Find the right program file to play 
+# Find the right audio file to play 
     play_file_index = min(schedule_dict, key = time_diff_past_only)
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     return play_file_index, play_file
@@ -63,7 +66,8 @@ class Radio:
         # play_file = '/media/pi/Samsung USB/radio/Drama_Graham_Greene_-_A_Burnt-Out_Case_-_1._Episode_1_b09fxr6b_original.m4a'
         # start_time = '00:10:00'
         # TO DO Error logging on subprocess, prob add def execute() to shared
-        self.r = subprocess.Popen(['omxplayer', '-o', 'local', '/media/pi/Samsung USB/radio/'+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        global audio_dir
+        self.r = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pass
     
     def stop(self):
@@ -73,7 +77,6 @@ class Radio:
     
 # Main -->
 GPIO.setmode(GPIO.BCM)
-switch_pin = 23
 GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 radio = Radio()
 play = False
