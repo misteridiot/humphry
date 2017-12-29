@@ -28,39 +28,42 @@ def list_programs(schedule_dict):
         print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'],schedule_dict[str(i)]['PID'])
         i += 1
 
-def find_program(schedule_dict):
+def find_audio_file(schedule_dict):
 # Find the right program file to play 
-    play_file_index = min(schedule_dict, key = past_only_time_diff)
+    play_file_index = min(schedule_dict, key = time_diff_past_only)
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
-    start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME']
-    start_time = format_start_time(start_time)
-    return play_file,start_time
+    return play_file_index, play_file
 
-def past_only_time_diff(i):
+def find_start_time(schedule_dict, play_file_index):
+# Find the time at which to start playing the audio file from
+    start_time = dt.datetime.today()-schedule_dict[play_file_index]['START_TIME']
+    hours, minutes, seconds = convert_timedelta(start_time)
+    start_time_str = "%02d" % (hours)+':'+ "%02d" % (minutes)+':'+ "%02d" % (seconds)    
+    return start_time_str
+
+def time_diff_past_only(i):
 # Key function to return time difference between a past START_TIME and now (future START_TIMEs effectively ignored by maxing them) 
     if schedule_dict[i]['START_TIME']<dt.datetime.today():
         return dt.datetime.today()-schedule_dict[i]['START_TIME']
     else:
         return dt.timedelta.max
 
-def format_start_time(timedelta):
-    seconds = timedelta.total_seconds()
-    hours = seconds // 3600
+def convert_timedelta(duration):
+    days, seconds = duration.days, duration.seconds
+    hours = days * 24 + (seconds // 3600)
     minutes = (seconds % 3600) // 60
-    seconds = seconds % 60
-    # TO DO move below line to def get_start_time() making this a generic timedelta converter function
-    formatted_timedelta = "%02d" % (hours)+':'+ "%02d" % (minutes)+':'+ "%02d" % (seconds)
-    return formatted_timedelta
+    seconds = (seconds % 60)
+    return hours, minutes, seconds
                
 class Radio:
     def __init__(self):
         pass
 
-    def start(self, play_file, start_time):
+    def start(self, play_file, start_time_str):
         # play_file = '/media/pi/Samsung USB/radio/Drama_Graham_Greene_-_A_Burnt-Out_Case_-_1._Episode_1_b09fxr6b_original.m4a'
         # start_time = '00:10:00'
         # TO DO Error logging on subprocess, prob add def execute() to shared
-        self.r = subprocess.Popen(['omxplayer', '-o', 'local', '/media/pi/Samsung USB/radio/'+play_file, '--pos='+start_time], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.r = subprocess.Popen(['omxplayer', '-o', 'local', '/media/pi/Samsung USB/radio/'+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pass
     
     def stop(self):
@@ -84,20 +87,12 @@ print('Dict times converted:' ,len(schedule_dict), 'records')
 while True:
     if get_press() == True:
         list_programs(schedule_dict)
-        play_file, start_time = find_program(schedule_dict)
+        play_file_index, play_file = find_audio_file(schedule_dict)
         print('Found file to play:', play_file)
-        print('Found start time:', start_time)
-        radio.start(play_file, start_time)
+        start_time_str = find_start_time(schedule_dict, play_file_index)
+        print('Found start time:', start_time_str)
+        radio.start(play_file, start_time_str)
         print('Started playing')
     else:
         radio.stop()
         print('Stopped playing')
-##
-##
-
-def convert_timedelta(duration):
-    days, seconds = duration.days, duration.seconds
-    hours = days * 24 + (seconds // 3600)
-    minutes = (seconds % 3600) // 60
-    seconds = (seconds % 60)
-    return hours, minutes, seconds
