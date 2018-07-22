@@ -1,4 +1,4 @@
-# BBC Radio 4 California
+# BBC Radio 4 Timeshift
 
 A project to create a physical radio that plays BBC Radio 4 time-synched to
 wherever it is. Uses get_iplayer and omxplayer to download and play the audio
