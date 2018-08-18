@@ -3,7 +3,7 @@
 import datetime as dt
 import json
 
-json_dir = '/media/pi/Samsung USB/json/'
+json_dir = '/home/pi/radio/json/'
 
 def set_date():
 # Get current year, month & day // used to define URL to be scraped
