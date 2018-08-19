@@ -12,6 +12,7 @@ def read_html(url):
     with urllib.request.urlopen(url) as f:
         html_doc = str(f.read())
     soup = BeautifulSoup(html_doc)
+    print (soup)
     return soup
 
 def build_schedule_dict(soup):
@@ -28,7 +29,7 @@ def build_schedule_dict(soup):
         prog_name = str(parent_tag.find(class_ = 'programme__title ').string)
         schedule_dict[i] = {'PID': pid, 'NAME': prog_name, 'START_TIME': start_time, 'END_TIME': end_time}
         i=i+1
-
+    print (schedule_dict)
     return schedule_dict
 
 # Main -->
