@@ -3,4 +3,5 @@ Setup notes
 json
 audio
 __pycache__
+shared.pyc
 *.pyc
