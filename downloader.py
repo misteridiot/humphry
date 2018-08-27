@@ -4,11 +4,13 @@ import datetime as dt
 import shared as sh
 import subprocess
 
+audio_dir = 'audio/'
+
 def get_record_times(year, month, day):
 # Set recording start & end times, the UK schedule times between which all radio programs will be downloaded
 # TO DO: Parse arguments from CLI cron call, for now hard code
-    rec_start_time = dt.datetime(int(year), int(month), int(day), 9, 0, 0, 0)
-    rec_end_time = dt.datetime(int(year), int(month), int(day), 12, 0, 0, 0)
+    rec_start_time = dt.datetime(int(year), int(month), int(day), 9, 45, 0, 0)
+    rec_end_time = dt.datetime(int(year), int(month), int(day), 10, 0, 0, 0)
 
     return rec_start_time, rec_end_time
 
@@ -26,8 +28,9 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
 
 def init_download(download_list):
 # Tell get_iplayer to record PIDs
+    global audio_dir
     download_str = ','.join(download_list)
-    for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--force']):
+    for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--radiomode=good', '--output='+audio_dir, '--force', '--overwrite']):
         print(path, end="")
     # TO DO: Add error/output logging
     return
@@ -54,5 +57,5 @@ print('Dict times converted:' ,len(schedule_dict), 'records')
 download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time)
 print('Download list compiled')
 init_download(download_list)
-print('Downloads started')
+print('Downloads completed')
 # Check success of downloads?

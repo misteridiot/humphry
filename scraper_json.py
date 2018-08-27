@@ -4,13 +4,14 @@ import requests as req
 import extruct
 import pprint
 import datetime as dt
+import pytz
+# from dateutil import tz
 import json
 import shared as sh
 
-json_dir = 'json/'
-
 def extract_json_ld(url):
 # Open BBC R4 schedule URL, extract JSON-LD, remove context to leave schedule list
+# NB feels like extruct is overkill - more lightweight would be to scrape json-ld using BS4, figure how to convert to dict
 
 #    pp = pprint.PrettyPrinter(indent=1)
     html_doc = req.get(url)
@@ -31,7 +32,16 @@ def build_schedule_dict(json_ld):
     for item in json_ld:
         pid = item['identifier']
         start_time = item['publication']['startDate']
+        # Convert UTC start time into local UK time
+        start_time_datetime = dt.datetime.strptime(start_time[:19], '%Y-%m-%dT%H:%M:%S')
+        start_time_utc = pytz.utc.localize(start_time_datetime)
+        start_time = start_time_utc.astimezone(pytz.timezone('Europe/London')).isoformat()
         end_time = item['publication']['endDate']
+        # Convert UTC end time into local UK time
+        end_time_datetime = dt.datetime.strptime(end_time[:19], '%Y-%m-%dT%H:%M:%S')
+        end_time_utc = pytz.utc.localize(end_time_datetime)
+        end_time = end_time_utc.astimezone(pytz.timezone('Europe/London')).isoformat()
+        # If there's a series name, use that for name, otherwise use the episode name (looks like not all episodes are part of series)
         if "partOfSeries" in item:
                 prog_name = item["partOfSeries"]['name']
         else:

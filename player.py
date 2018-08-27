@@ -11,7 +11,7 @@ import time
 import RPi.GPIO as GPIO
 import shared as sh
 
-audio_dir = '/media/pi/Samsung USB/radio/'
+audio_dir = 'audio/'
 switch_pin = 23
 
 def get_press():
