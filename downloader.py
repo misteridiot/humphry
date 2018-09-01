@@ -1,5 +1,6 @@
 # downloader.py - downloading files for bbc_r4_ca project to play
 
+import sys
 import datetime as dt
 import shared as sh
 import subprocess
@@ -7,10 +8,13 @@ import subprocess
 audio_dir = 'audio/'
 
 def get_record_times(year, month, day):
-# Set recording start & end times, the UK schedule times between which all radio programs will be downloaded
-# TO DO: Parse arguments from CLI cron call, for now hard code
-    rec_start_time = dt.datetime(int(year), int(month), int(day), 9, 45, 0, 0)
-    rec_end_time = dt.datetime(int(year), int(month), int(day), 10, 0, 0, 0)
+# Set recording start & end times, the UK schedule times between which all radio programs will be downloaded, using CLI args
+    rec_start_hour = int(sys.argv[1])
+    rec_start_min = int(sys.argv[2])
+    rec_end_hour = int(sys.argv[3])
+    rec_end_min = int(sys.argv[4])
+    rec_start_time = dt.datetime(int(year), int(month), int(day), rec_start_hour, rec_start_min, 0, 0)
+    rec_end_time = dt.datetime(int(year), int(month), int(day), rec_end_hour, rec_end_min, 0, 0)
 
     return rec_start_time, rec_end_time
 
@@ -26,9 +30,8 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
     print(len(download_list), 'programs to download:', download_list)
     return download_list
 
-def init_download(download_list):
+def init_download(download_list, audio_dir):
 # Tell get_iplayer to record PIDs
-    global audio_dir
     download_str = ','.join(download_list)
     for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--radiomode=good', '--output='+audio_dir, '--force', '--overwrite']):
         print(path, end="")
@@ -56,6 +59,6 @@ schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
 download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time)
 print('Download list compiled')
-init_download(download_list)
+init_download(download_list, audio_dir)
 print('Downloads completed')
 # Check success of downloads?
