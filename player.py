@@ -67,7 +67,7 @@ class Radio:
         # start_time = '00:10:00'
         # TO DO Error logging on subprocess, prob add def execute() to shared
         global audio_dir
-        self.r = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.r = subprocess.Popen(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pass
     
     def stop(self):
