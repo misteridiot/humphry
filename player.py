@@ -58,7 +58,7 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
-def radio_play(audio_dir, play)
+def radio_play(audio_dir, play):
     if play == False:
         list_programs(schedule_dict)
         play_file_index, play_file = find_audio_file(schedule_dict)
