@@ -57,29 +57,52 @@ def convert_timedelta(duration):
     minutes = (seconds % 3600) // 60
     seconds = (seconds % 60)
     return hours, minutes, seconds
-               
-class Radio:
-    def __init__(self):
-        pass
 
-    def start(self, play_file, start_time_str):
+def radio_play(audio_dir, play)
+    if play == False:
+        list_programs(schedule_dict)
+        play_file_index, play_file = find_audio_file(schedule_dict)
+        print('Found file to play:', play_file)
+        start_time_str = find_start_time(schedule_dict, play_file_index)
+        print('Found start time:', start_time_str)
+        for path in sh.execute(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str]):
+                print(path, end="")
+#        radio.start(play_file, start_time_str)
+        play = True
+        print('Started playing')
+        return play
+    else:
+        for path in sh.execute(['killall', 'omxplayer.bin']):
+                print(path, end="")
+#        radio.stop()
+        print('Stopped playing')
+        play = False
+        return play
+ 
+# class Radio:
+#    def __init__(self):
+#        pass
+
+#    def start(self, play_file, start_time_str):
         # play_file = '/media/pi/Samsung USB/radio/Drama_Graham_Greene_-_A_Burnt-Out_Case_-_1._Episode_1_b09fxr6b_original.m4a'
         # start_time = '00:10:00'
         # TO DO Error logging on subprocess, prob add def execute() to shared
-        global audio_dir
-        self.r = subprocess.Popen(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        pass
+#        global audio_dir
+#        self.r = subprocess.Popen(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#        pass
     
-    def stop(self):
-        subprocess.call(['killall', 'omxplayer.bin'])
+#    def stop(self):
+#        subprocess.call(['killall', 'omxplayer.bin'])
         # TO DO More elegant way of stopping omxplayer than killall!
-        pass
+#        pass
     
 # Main -->
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-radio = Radio()
+#radio = Radio()
+
 play = False
+# TO DO: If player is always running the below set up will need to happen more frequently - on play stop? Check if there's a JSON file with today's date on play, if not then scraper.py? 
 year, month, day = sh.set_date()
 print('Current date set')
 raw_schedule_dict = sh.load_json(year, month, day)
@@ -87,15 +110,9 @@ print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
 
-while True:
-    if get_press() == True:
-        list_programs(schedule_dict)
-        play_file_index, play_file = find_audio_file(schedule_dict)
-        print('Found file to play:', play_file)
-        start_time_str = find_start_time(schedule_dict, play_file_index)
-        print('Found start time:', start_time_str)
-        radio.start(play_file, start_time_str)
-        print('Started playing')
-    else:
-        radio.stop()
-        print('Stopped playing')
+GPIO.add_event_detect(switch_pin, GPIO.BOTH, callback=radio_play(audio_dir, play))
+        
+except KeyboardInterrupt:
+        GPIO.cleanup()
+
+GPIO.cleanup()

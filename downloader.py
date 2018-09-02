@@ -33,20 +33,10 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
 def init_download(download_list, audio_dir):
 # Tell get_iplayer to record PIDs
     download_str = ','.join(download_list)
-    for path in execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--radiomode=good', '--output='+audio_dir, '--force', '--overwrite']):
+    for path in sh.execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--radiomode=good', '--output='+audio_dir, '--force', '--overwrite']):
         print(path, end="")
     # TO DO: Add error/output logging
     return
-
-def execute(command):
-# Execute subprocess, returning STDOUT line by line to br printed for debugging
-    popen = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
-    for stdout_line in iter(popen.stdout.readline, ""):
-        yield stdout_line 
-    popen.stdout.close()
-    return_code = popen.wait()
-    if return_code:
-        raise subprocess.CalledProcessError(return_code, command)
 
 # Main -->
 year, month, day = sh.set_date()
