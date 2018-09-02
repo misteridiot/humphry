@@ -2,6 +2,7 @@
 
 import datetime as dt
 import json
+import subprocess
 
 json_dir = 'json/'
 
