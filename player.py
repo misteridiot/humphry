@@ -112,7 +112,4 @@ print('Dict times converted:' ,len(schedule_dict), 'records')
 
 GPIO.add_event_detect(switch_pin, GPIO.BOTH, callback=radio_play(audio_dir, play))
         
-except KeyboardInterrupt:
-        GPIO.cleanup()
-
 GPIO.cleanup()
