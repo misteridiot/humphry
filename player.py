@@ -14,15 +14,15 @@ import shared as sh
 audio_dir = 'audio/'
 switch_pin = 23
 
-def get_press():
+# def get_press():
 # Detect button press to toggle between play and stop states
 # TO DO Find a way of capturing button presses that is more CPU efficient
-    global play
-    while True:
-        if GPIO.input(switch_pin) == False:
-            play = not play
-            time.sleep(0.25)
-            return play
+#    global play
+#    while True:
+#        if GPIO.input(switch_pin) == False:
+#            play = not play
+#            time.sleep(0.25)
+#            return play
 
 def list_programs(schedule_dict):
 # FOR DEBUGGING: list all progs in schedule_dict to check correct file is being played
@@ -58,7 +58,9 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
-def radio_play(audio_dir, play):
+def radio_play(input_pin):
+    global play
+    global audio_dir
     if play == False:
         list_programs(schedule_dict)
         play_file_index, play_file = find_audio_file(schedule_dict)
@@ -70,14 +72,12 @@ def radio_play(audio_dir, play):
 #        radio.start(play_file, start_time_str)
         play = True
         print('Started playing')
-        return play
     else:
         for path in sh.execute(['killall', 'omxplayer.bin']):
                 print(path, end="")
 #        radio.stop()
-        print('Stopped playing')
         play = False
-        return play
+        print('Stopped playing')
  
 # class Radio:
 #    def __init__(self):
@@ -110,6 +110,6 @@ print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
 
-GPIO.add_event_detect(switch_pin, GPIO.BOTH, callback=radio_play(audio_dir, play))
-        
+GPIO.add_event_detect(switch_pin, GPIO.BOTH, callback=radio_play)
+
 GPIO.cleanup()
