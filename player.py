@@ -58,7 +58,7 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
-def radio_play(switch_pin):
+def radio_play():
     global play
     global audio_dir
     if play == False:
@@ -110,4 +110,6 @@ print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
 
-GPIO.add_event_detect(switch_pin, GPIO.FALLING, callback=radio_play)
+while True:
+    GPIO.wait_for_edge(switch_pin, GPIO.FALLING)
+    radio_play()
