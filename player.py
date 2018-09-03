@@ -72,14 +72,14 @@ def radio_play():
 #        radio.start(play_file, start_time_str)
         play = True
         print('Started playing')
-        return pass
+        return
     else:
         for path in sh.execute(['killall', 'omxplayer.bin']):
             print(path, end="")
 #        radio.stop()
         play = False
         print('Stopped playing')
-        return pass
+        return
  
 # class Radio:
 #    def __init__(self):
