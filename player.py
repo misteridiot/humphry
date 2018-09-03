@@ -68,16 +68,18 @@ def radio_play():
         start_time_str = find_start_time(schedule_dict, play_file_index)
         print('Found start time:', start_time_str)
         for path in sh.execute(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str]):
-                print(path, end="")
+            print(path, end="")
 #        radio.start(play_file, start_time_str)
         play = True
         print('Started playing')
+        return pass
     else:
         for path in sh.execute(['killall', 'omxplayer.bin']):
-                print(path, end="")
+            print(path, end="")
 #        radio.stop()
         play = False
         print('Stopped playing')
+        return pass
  
 # class Radio:
 #    def __init__(self):
