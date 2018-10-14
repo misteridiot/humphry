@@ -67,16 +67,18 @@ def radio_play():
         print('Found file to play:', play_file)
         start_time_str = find_start_time(schedule_dict, play_file_index)
         print('Found start time:', start_time_str)
-        for path in sh.execute(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str]):
-            print(path, end="")
+        popen = subprocess.Popen((['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
+#        for path in sh.execute(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str]):
+#            print(path, end="")
 #        radio.start(play_file, start_time_str)
         play = True
         print('Started playing')
         return
     else:
-        for path in sh.execute(['killall', 'omxplayer.bin']):
-            print(path, end="")
+#        for path in sh.execute(['killall', 'omxplayer.bin']):
+#            print(path, end="")
 #        radio.stop()
+        subprocess.call(['killall', 'omxplayer.bin'])
         play = False
         print('Stopped playing')
         return
@@ -111,6 +113,7 @@ raw_schedule_dict = sh.load_json(year, month, day)
 print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
+print('Waiting for button press')
 
 while True:
     GPIO.wait_for_edge(switch_pin, GPIO.FALLING)
