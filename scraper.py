@@ -1,4 +1,7 @@
 # scraper.py - scraping the BBC R4 schedule to fuel the downloader and player modules of the bbc_r4_ca project
+import sys
+
+raise RuntimeError(sys.path)
 
 import requests as req
 import extruct
@@ -42,9 +45,9 @@ def build_schedule_dict(json_ld):
         end_time = end_time_utc.astimezone(pytz.timezone('Europe/London')).isoformat()
         # If there's a series name, use that for name, otherwise use the episode name (looks like not all episodes are part of series)
         if "partOfSeries" in item:
-                prog_name = item["partOfSeries"]['name']
+            prog_name = item["partOfSeries"]['name']
         else:
-                prog_name = item['name']                
+            prog_name = item['name']                
         schedule_dict[i] = {'PID': pid, 'NAME': prog_name, 'START_TIME': start_time, 'END_TIME': end_time}
         i=i+1
     pp.pprint (schedule_dict)
