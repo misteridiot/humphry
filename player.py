@@ -62,7 +62,7 @@ def radio_play():
     global play
     global audio_dir
     if play == False:
-        list_programs(schedule_dict)
+#        list_programs(schedule_dict)
         play_file_index, play_file = find_audio_file(schedule_dict)
         print('Found file to play:', play_file)
         start_time_str = find_start_time(schedule_dict, play_file_index)
