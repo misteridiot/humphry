@@ -73,6 +73,7 @@ def radio_play():
 #        radio.start(play_file, start_time_str)
         play = True
         print('Started playing')
+        time.sleep(0.25)
         return
     else:
 #        for path in sh.execute(['killall', 'omxplayer.bin']):
@@ -81,6 +82,7 @@ def radio_play():
         subprocess.call(['killall', 'omxplayer.bin'])
         play = False
         print('Stopped playing')
+        time.sleep(0.25)
         return
  
 # class Radio:
