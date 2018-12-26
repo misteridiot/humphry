@@ -12,7 +12,7 @@ import RPi.GPIO as GPIO
 import shared as sh
 
 audio_dir = 'audio/'
-switch_pin = 23
+switch_pin = 18
 
 # def get_press():
 # Detect button press to toggle between play and stop states
