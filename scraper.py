@@ -1,6 +1,6 @@
-# scraper.py - scraping the BBC R4 schedule to fuel the downloader and player modules of the bbc_r4_ca project
-
 #!/usr/bin/env python
+
+# scraper.py - scraping the BBC R4 schedule to fuel the downloader and player modules of the bbc_r4_ca project
 
 import requests as req
 import extruct
