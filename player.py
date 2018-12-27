@@ -67,7 +67,8 @@ def radio_play():
         print('Found file to play:', play_file)
         start_time_str = find_start_time(schedule_dict, play_file_index)
         print('Found start time:', start_time_str)
-        popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
+#        popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
+        popen = subprocess.Popen(['omxplayer', '-o', 'local', 'audio/m0001r7f.m4a', '--pos=00:01:30'], stdout=subprocess.PIPE, universal_newlines=True)
 #        for path in sh.execute(['omxplayer', '-o', 'hdmi', audio_dir+play_file, '--pos='+start_time_str]):
 #            print(path, end="")
 #        radio.start(play_file, start_time_str)
