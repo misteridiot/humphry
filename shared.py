@@ -3,7 +3,11 @@
 import datetime as dt
 import json
 import subprocess
+import os
+import time
+import sys
 
+# TO DO: MOVE json_dir into relevant scripts, pass into functions as variable when called
 json_dir = 'json/'
 
 def set_date():
@@ -46,3 +50,11 @@ def execute(command):
     return_code = popen.wait()
     if return_code:
         raise subprocess.CalledProcessError(return_code, command)
+
+def cleanup(file_dir,delete_hours):
+    now = time.time()
+    for file in os.listdir(file_dir):
+        file_path = os.path.join(file_dir,file)
+        if os.path.isfile(file_path) and os.stat(file_path).st_mtime < now - (delete_hours * 60 * 60):
+#            os.remove(file_path)
+            print("\n File removed:",file_path)
