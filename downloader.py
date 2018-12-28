@@ -27,7 +27,7 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
         end_time = schedule_dict[key]['END_TIME']
         pid = schedule_dict[key]['PID']
         if (start_time <= rec_start_time and end_time > rec_start_time) or (start_time > rec_start_time and start_time < rec_end_time):
-            file_path = os.path.join(audio_dir,pid,'.m4a')
+            file_path = os.path.join(audio_dir,pid+'.m4a')
             print(file_path)
             exists = os.path.isfile(file_path)
             if exists:
