@@ -53,12 +53,14 @@ def build_schedule_dict(json_ld):
     return schedule_dict
 
 # Main -->
-year, month, day = sh.set_date()
-url = 'https://www.bbc.co.uk/schedules/p00fzl7j/' + year + '/' + month + '/' + day
-print(url)
-json_ld = extract_json_ld(url)
-print('JSON-LD extracted as dict')
-schedule_dict = build_schedule_dict(json_ld)
-print('Dict complete:',len(schedule_dict), 'records')
-sh.save_json(schedule_dict, year, month, day)
-print('JSON file saved')
+def scraper(json_dir):
+    year, month, day = sh.set_date()
+    url = 'https://www.bbc.co.uk/schedules/p00fzl7j/' + year + '/' + month + '/' + day
+    print(url)
+    json_ld = extract_json_ld(url)
+    print('JSON-LD extracted as dict')
+    schedule_dict = build_schedule_dict(json_ld)
+    print('Dict complete:',len(schedule_dict), 'records')
+    sh.save_json(schedule_dict, year, month, day, json_dir)
+    print('JSON file saved')
+    return

@@ -8,14 +8,16 @@ import shared as sh
 import subprocess
 import os
 
-audio_dir = 'audio/'
-
-def get_record_times(year, month, day):
-# Set recording start & end times, the UK schedule times between which all radio programs will be downloaded, using CLI args
-    rec_start_hour = int(sys.argv[1])
-    rec_start_min = int(sys.argv[2])
-    rec_end_hour = int(sys.argv[3])
-    rec_end_min = int(sys.argv[4])
+def get_record_times(year, month, day, hours_ahead):
+# Set recording start & end times, the UK schedule times between which all radio programs will be downloaded, using CLI args --> REMOVED GIVEN SETTING TIMES FROM MAIN.PY
+#    rec_start_hour = int(sys.argv[1])
+#    rec_start_min = int(sys.argv[2])
+#    rec_end_hour = int(sys.argv[3])
+#    rec_end_min = int(sys.argv[4])
+    rec_start_hour = dt.datetime.now().hour
+    rec_start_min = dt.datetime.now().minute
+    rec_end_hour = rec_start_hour + hours_ahead
+    rec_end_min = rec_start_min
     rec_start_time = dt.datetime(int(year), int(month), int(day), rec_start_hour, rec_start_min, 0, 0)
     rec_end_time = dt.datetime(int(year), int(month), int(day), rec_end_hour, rec_end_min, 0, 0)
 
@@ -49,16 +51,20 @@ def init_download(download_list, audio_dir):
     return
 
 # Main -->
-year, month, day = sh.set_date()
-print('Current date set')
-rec_start_time, rec_end_time = get_record_times(year, month, day)
-print('Got record times')
-raw_schedule_dict = sh.load_json(year, month, day)
-print('JSON imported')
-schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
-print('Dict times converted:' ,len(schedule_dict), 'records')
-download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time)
-print('Download list compiled')
-init_download(download_list, audio_dir)
-print('Downloads completed')
+def downloader(hours_ahead, audio_dir):
+    year, month, day = sh.set_date()
+    print('Current date set')
+#    rec_start_time = dt.datetime(int(year), int(month), int(day), rec_start_hour, rec_start_min, 0, 0)
+#    rec_end_time = dt.datetime(int(year), int(month), int(day), rec_end_hour, rec_end_min, 0, 0)
+    rec_start_time, rec_end_time = get_record_times(year, month, day, hours_ahead)
+    print('Got record times')
+    raw_schedule_dict = sh.load_json(year, month, day)
+    print('JSON imported')
+    schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
+    print('Dict times converted:' ,len(schedule_dict), 'records')
+    download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time)
+    print('Download list compiled')
+    init_download(download_list, audio_dir)
+    print('Downloads completed')
+    return
 # Check success of downloads?

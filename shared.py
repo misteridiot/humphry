@@ -8,7 +8,6 @@ import time
 import sys
 
 # TO DO: MOVE json_dir into relevant scripts, pass into functions as variable when called
-json_dir = 'json/'
 
 def set_date():
 # Get current year, month & day // used to define URL to be scraped
@@ -20,9 +19,9 @@ def set_date():
 
     return year, month, day
 
-def save_json(schedule_dict, year, month, day):
+def save_json(schedule_dict, year, month, day, json_dir):
 # Dump schedule dict as a JSON file named with given date (usu today's date)
-    global json_dir
+#    global json_dir
     with open(json_dir + year + '-' + month + '-' + day + '.json', 'w') as file:
         json.dump(schedule_dict, file, indent=4, sort_keys=True, separators=(',',': '))
 
