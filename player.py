@@ -21,7 +21,7 @@ def list_programs(schedule_dict):
 
 def find_audio_file(schedule_dict):
 # Find the right audio file to play 
-    play_file_index = min(schedule_dict, key = time_diff_past_only(i, schedule_dict))
+    play_file_index = min(schedule_dict, key = time_diff_past_only(i,schedule_dict))
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     return play_file_index, play_file
 
