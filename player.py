@@ -12,13 +12,7 @@ audio_dir = 'audio/'
 json_dir = 'json/'
 schedule_dict = {}
 switch_pin = 18
-
-def list_programs(schedule_dict):
-# FOR DEBUGGING: list all progs in schedule_dict to check correct file is being played
-    i = 1
-    while i <= len(schedule_dict):
-        print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'],schedule_dict[str(i)]['PID'])
-        i += 1
+play_status = False
 
 def find_audio_file(schedule_dict):
 # Find the right audio file to play 
@@ -47,42 +41,44 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
-def radio_play(play, json_dir, audio_dir):
+def list_programs(schedule_dict):
+# FOR DEBUGGING: list all progs in schedule_dict to check correct file is being played
+    i = 1
+    while i <= len(schedule_dict):
+        print(i, schedule_dict[str(i)]['NAME'],schedule_dict[str(i)]['START_TIME'],schedule_dict[str(i)]['PID'])
+        i += 1
+
+def radio_play(play_status, json_dir, audio_dir):
     global schedule_dict
-    if play == False:
+    if play_status == False:
 #        list_programs(schedule_dict)
         year, month, day = sh.set_date()
         print('Current date set')
         raw_schedule_dict = sh.load_json(year, month, day, json_dir)
         print('JSON imported')
         schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
-        print('Dict times converted:' ,len(schedule_dict), 'records')
+        print('Dict times converted: '+str(len(schedule_dict))+' records')
         play_file_index, play_file = find_audio_file(schedule_dict)
-        print('Found file to play:', play_file)
+        print('Found file to play: '+play_file)
         start_time_str = find_start_time(schedule_dict, play_file_index)
-        print('Found start time:', start_time_str)
+        print('Found start time: '+start_time_str)
         popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
-        play = True
+        play_status = True
         print('Started playing')
         time.sleep(0.25)
-        return play
+        return play_status
     else:
         subprocess.call(['killall', 'omxplayer.bin'])
-        play = False
+        play_status = False
         print('Stopped playing')
         time.sleep(0.25)
-        return play
+        return play_status
  
 # Main -->
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-#radio = Radio()
-
-play = False
-# TO DO: If player is always running the below set up will need to happen more frequently - on play stop? Check if there's a JSON file with today's date on play, if not then scraper.py? 
-
 print('Waiting for button press')
 
 while True:
     GPIO.wait_for_edge(switch_pin, GPIO.FALLING)
-    play = radio_play(play, json_dir, audio_dir)
+    play_status = radio_play(play_status, json_dir, audio_dir)
