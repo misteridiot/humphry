@@ -23,7 +23,7 @@ def get_record_times(year, month, day, hours_ahead):
 
     return rec_start_time, rec_end_time
 
-def get_download_list(schedule_dict, rec_start_time, rec_end_time):
+def get_download_list(schedule_dict, rec_start_time, rec_end_time, audio_dir):
 # Read PIDs between recording start & end times, check if alreday downloaded, if not add to download_list
     download_list = []
     for key in schedule_dict:
@@ -62,7 +62,7 @@ def downloader(hours_ahead, audio_dir, json_dir):
     print('JSON imported')
     schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
     print('Dict times converted:' ,len(schedule_dict), 'records')
-    download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time)
+    download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time, audio_dir)
     print('Download list compiled')
     init_download(download_list, audio_dir)
     print('Downloads completed')
