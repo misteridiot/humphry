@@ -39,7 +39,8 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time, audio_dir):
             else:
                 download_list.append(pid)
                 print('Added to download list: '+schedule_dict[key]['NAME']+' '+pid)
-    print(str(len(download_list))+' programs to download: '+download_list)
+    print(str(len(download_list))+' programs to download:')
+    print(download_list)
     return download_list
 
 def init_download(download_list, audio_dir):
