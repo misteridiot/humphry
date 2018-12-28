@@ -4,6 +4,7 @@ import sys
 import datetime as dt
 import shared as sh
 import subprocess
+import os
 
 audio_dir = 'audio/'
 
@@ -19,14 +20,21 @@ def get_record_times(year, month, day):
     return rec_start_time, rec_end_time
 
 def get_download_list(schedule_dict, rec_start_time, rec_end_time):
-# Read PIDs between recording start & end times, add to download_list
+# Read PIDs between recording start & end times, check if alreday downloaded, if not add to download_list
     download_list = []
     for key in schedule_dict:
         start_time = schedule_dict[key]['START_TIME']
         end_time = schedule_dict[key]['END_TIME']
+        pid = schedule_dict[key]['PID']
         if (start_time <= rec_start_time and end_time > rec_start_time) or (start_time > rec_start_time and start_time < rec_end_time):
-            download_list.append(schedule_dict[key]['PID'])
-            print(start_time, end_time, schedule_dict[key]['NAME'], schedule_dict[key]['PID'])
+            file_path = os.path.join(audio_dir,pid,'.m4a')
+            print(file_path)
+            exists = os.path.isfile(file_path)
+            if exists:
+                download_list.append(pid)
+                print(start_time, end_time, schedule_dict[key]['NAME'], pid)
+            else:
+                print('File already downloaded:',pid)
     print(len(download_list), 'programs to download:', download_list)
     return download_list
 
