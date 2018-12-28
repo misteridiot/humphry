@@ -10,6 +10,7 @@ import shared as sh
 
 audio_dir = 'audio/'
 json_dir = 'json/'
+schedule_dict = {}
 switch_pin = 18
 
 def list_programs(schedule_dict):
@@ -21,7 +22,7 @@ def list_programs(schedule_dict):
 
 def find_audio_file(schedule_dict):
 # Find the right audio file to play 
-    play_file_index = min(schedule_dict, key = time_diff_past_only(schedule_dict))
+    play_file_index = min(schedule_dict, key = time_diff_past_only)
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     return play_file_index, play_file
 
@@ -32,7 +33,7 @@ def find_start_time(schedule_dict, play_file_index):
     start_time_str = "%02d" % (hours)+':'+ "%02d" % (minutes)+':'+ "%02d" % (seconds)    
     return start_time_str
 
-def time_diff_past_only(i, schedule_dict):
+def time_diff_past_only(i):
 # Key function to return time difference between a past START_TIME and now (future START_TIMEs effectively ignored by maxing them) 
     if schedule_dict[i]['START_TIME']<dt.datetime.today():
         return dt.datetime.today()-schedule_dict[i]['START_TIME']
@@ -47,6 +48,7 @@ def convert_timedelta(duration):
     return hours, minutes, seconds
 
 def radio_play(play, json_dir, audio_dir):
+    global schedule_dict
     if play == False:
 #        list_programs(schedule_dict)
         year, month, day = sh.set_date()
@@ -78,6 +80,7 @@ GPIO.setup(switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 play = False
 # TO DO: If player is always running the below set up will need to happen more frequently - on play stop? Check if there's a JSON file with today's date on play, if not then scraper.py? 
+
 print('Waiting for button press')
 
 while True:
