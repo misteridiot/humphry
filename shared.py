@@ -25,9 +25,9 @@ def save_json(schedule_dict, year, month, day, json_dir):
     with open(json_dir + year + '-' + month + '-' + day + '.json', 'w') as file:
         json.dump(schedule_dict, file, indent=4, sort_keys=True, separators=(',',': '))
 
-def load_json(year, month, day):
+def load_json(year, month, day, json_dir):
 # Load JSON schedule file for given date
-    global json_dir
+#    global json_dir
     filename = json_dir + year + '-' + month + '-' + day + '.json'
     with open(filename) as file:
         raw_schedule_dict = json.load(file)
