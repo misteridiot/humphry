@@ -46,14 +46,12 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
-def radio_play():
-    global play
-    global audio_dir
+def radio_play(play, json_dir, audio_dir):
     if play == False:
 #        list_programs(schedule_dict)
         year, month, day = sh.set_date()
         print('Current date set')
-        raw_schedule_dict = sh.load_json(year, month, day,json_dir)
+        raw_schedule_dict = sh.load_json(year, month, day, json_dir)
         print('JSON imported')
         schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
         print('Dict times converted:' ,len(schedule_dict), 'records')
@@ -65,13 +63,13 @@ def radio_play():
         play = True
         print('Started playing')
         time.sleep(0.25)
-        return
+        return play
     else:
         subprocess.call(['killall', 'omxplayer.bin'])
         play = False
         print('Stopped playing')
         time.sleep(0.25)
-        return
+        return play
  
 # Main -->
 GPIO.setmode(GPIO.BCM)
@@ -84,4 +82,4 @@ print('Waiting for button press')
 
 while True:
     GPIO.wait_for_edge(switch_pin, GPIO.FALLING)
-    radio_play()
+    play = radio_play(play, json_dir, audio_dir)
