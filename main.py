@@ -11,7 +11,7 @@ hours_ahead = 1
 
 scraper.scraper(json_dir)
 print("MAIN: SCRAPER COMPLETE")
-downloader.downloader(hours_ahead, audio_dir)
+downloader.downloader(hours_ahead, audio_dir,json_dir)
 print("MAIN: DOWNLOADER COMPLETE")
 sh.cleanup(audio_dir,12)
 print("MAIN: AUDIO CLEANUP COMPLETE")
