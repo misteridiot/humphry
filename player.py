@@ -34,6 +34,7 @@ def find_start_time(schedule_dict, play_file_index):
 
 def time_diff_past_only(i):
 # Key function to return time difference between a past START_TIME and now (future START_TIMEs effectively ignored by maxing them) 
+    global schedule_dict
     if schedule_dict[i]['START_TIME']<dt.datetime.today():
         return dt.datetime.today()-schedule_dict[i]['START_TIME']
     else:
