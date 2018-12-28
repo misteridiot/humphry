@@ -21,7 +21,7 @@ def list_programs(schedule_dict):
 
 def find_audio_file(schedule_dict):
 # Find the right audio file to play 
-    play_file_index = min(schedule_dict, key = time_diff_past_only)
+    play_file_index = min(schedule_dict, key = time_diff_past_only(i, schedule_dict))
     play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     return play_file_index, play_file
 
@@ -32,9 +32,8 @@ def find_start_time(schedule_dict, play_file_index):
     start_time_str = "%02d" % (hours)+':'+ "%02d" % (minutes)+':'+ "%02d" % (seconds)    
     return start_time_str
 
-def time_diff_past_only(i):
+def time_diff_past_only(i, schedule_dict):
 # Key function to return time difference between a past START_TIME and now (future START_TIMEs effectively ignored by maxing them) 
-    global schedule_dict
     if schedule_dict[i]['START_TIME']<dt.datetime.today():
         return dt.datetime.today()-schedule_dict[i]['START_TIME']
     else:
