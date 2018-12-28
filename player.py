@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # player.py - player module as part of BBC Radio 4 CA project
 
 # Useful get_iplayer calls

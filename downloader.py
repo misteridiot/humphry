@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # downloader.py - downloading files for bbc_r4_ca project to play
 
 import sys
@@ -42,7 +44,7 @@ def init_download(download_list, audio_dir):
 # Tell get_iplayer to record PIDs
     download_str = ','.join(download_list)
     for path in sh.execute(['get_iplayer', '--type=radio', '--pid='+download_str, '--file-prefix=<pid>', '--radiomode=good', '--output='+audio_dir, '--force', '--overwrite']):
-        print(path, end="")
+        print(path,)
     # TO DO: Add error/output logging
     return
 
