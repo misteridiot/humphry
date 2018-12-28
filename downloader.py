@@ -61,7 +61,7 @@ def downloader(hours_ahead, audio_dir, json_dir):
     raw_schedule_dict = sh.load_json(year, month, day,json_dir)
     print('JSON imported')
     schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
-    print('Dict times converted: '+len(schedule_dict)+' records')
+    print('Dict times converted: '+str(len(schedule_dict))+' records')
     download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time, audio_dir)
     print('Download list compiled')
     init_download(download_list, audio_dir)

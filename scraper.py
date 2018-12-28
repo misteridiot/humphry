@@ -60,7 +60,7 @@ def scraper(json_dir):
     json_ld = extract_json_ld(url)
     print('JSON-LD extracted as dict')
     schedule_dict = build_schedule_dict(json_ld)
-    print('Dict complete:',len(schedule_dict), 'records')
+    print('Dict complete: '+str(len(schedule_dict))+' records')
     sh.save_json(schedule_dict, year, month, day, json_dir)
     print('JSON file saved')
     return
