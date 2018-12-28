@@ -31,10 +31,10 @@ def get_download_list(schedule_dict, rec_start_time, rec_end_time):
             print(file_path)
             exists = os.path.isfile(file_path)
             if exists:
-                download_list.append(pid)
-                print(start_time, end_time, schedule_dict[key]['NAME'], pid)
-            else:
                 print('File already downloaded:',pid)
+            else:
+                download_list.append(pid)
+                print('Added to download list:'start_time, end_time, schedule_dict[key]['NAME'], pid)
     print(len(download_list), 'programs to download:', download_list)
     return download_list
 
