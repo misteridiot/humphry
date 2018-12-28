@@ -7,7 +7,7 @@ import datetime as dt
 
 audio_dir = 'audio/'
 json_dir = 'json/'
-hours_ahead = 4
+hours_ahead = 1
 
 scraper.scraper(json_dir)
 print("MAIN: SCRAPER COMPLETE")

@@ -51,14 +51,14 @@ def init_download(download_list, audio_dir):
     return
 
 # Main -->
-def downloader(hours_ahead, audio_dir):
+def downloader(hours_ahead, audio_dir, json_dir):
     year, month, day = sh.set_date()
     print('Current date set')
 #    rec_start_time = dt.datetime(int(year), int(month), int(day), rec_start_hour, rec_start_min, 0, 0)
 #    rec_end_time = dt.datetime(int(year), int(month), int(day), rec_end_hour, rec_end_min, 0, 0)
     rec_start_time, rec_end_time = get_record_times(year, month, day, hours_ahead)
     print('Got record times')
-    raw_schedule_dict = sh.load_json(year, month, day)
+    raw_schedule_dict = sh.load_json(year, month, day,json_dir)
     print('JSON imported')
     schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
     print('Dict times converted:' ,len(schedule_dict), 'records')

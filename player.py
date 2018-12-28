@@ -14,6 +14,7 @@ import RPi.GPIO as GPIO
 import shared as sh
 
 audio_dir = 'audio/'
+json_dir = 'json/'
 switch_pin = 18
 
 # def get_press():
@@ -114,7 +115,7 @@ play = False
 # TO DO: If player is always running the below set up will need to happen more frequently - on play stop? Check if there's a JSON file with today's date on play, if not then scraper.py? 
 year, month, day = sh.set_date()
 print('Current date set')
-raw_schedule_dict = sh.load_json(year, month, day)
+raw_schedule_dict = sh.load_json(year, month, day,json_dir)
 print('JSON imported')
 schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
 print('Dict times converted:' ,len(schedule_dict), 'records')
