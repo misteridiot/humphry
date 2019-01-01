@@ -7,6 +7,7 @@ import datetime as dt
 import time
 import RPi.GPIO as GPIO
 import shared as sh
+import sys
 
 audio_dir = 'audio/'
 json_dir = 'json/'
@@ -65,8 +66,9 @@ def radio_play(play_status, json_dir, audio_dir):
         popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
         play_status = True
         print('Started playing')
+        sys.stdout.flush()
         time.sleep(0.25)
-        return play_status
+        return play_status #, popen
     else:
         subprocess.call(['killall', 'omxplayer.bin'])
         play_status = False
@@ -82,3 +84,12 @@ print('Waiting for button press')
 while True:
     GPIO.wait_for_edge(switch_pin, GPIO.FALLING)
     play_status = radio_play(play_status, json_dir, audio_dir)
+
+#    while True:
+#        if popen.poll() <> None and play_status = True:
+#            [omxplayer plays 30sec default audio]
+#            time.sleep(1)
+#        else:
+#            time.sleep(1)
+
+

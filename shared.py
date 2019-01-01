@@ -56,4 +56,4 @@ def cleanup(file_dir,delete_hours):
         file_path = os.path.join(file_dir,file)
         if os.path.isfile(file_path) and os.stat(file_path).st_mtime < now - (delete_hours * 60 * 60):
             os.remove(file_path)
-            print("\n File removed:",file_path)
+            print("File removed: "+str(file_path))
