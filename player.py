@@ -68,7 +68,7 @@ def radio_play(play_status, json_dir, audio_dir):
         print('Started playing')
         sys.stdout.flush()
         time.sleep(0.25)
-        return play_status #, popen
+        return play_status
     else:
         subprocess.call(['killall', 'omxplayer.bin'])
         play_status = False
