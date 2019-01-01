@@ -7,8 +7,6 @@ import os
 import time
 import sys
 
-# TO DO: MOVE json_dir into relevant scripts, pass into functions as variable when called
-
 def set_date():
 # Get current year, month & day // used to define URL to be scraped
 # and name resulting JSON file, and to set rec start & end times 

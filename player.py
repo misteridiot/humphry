@@ -7,7 +7,7 @@ import datetime as dt
 import time
 import RPi.GPIO as GPIO
 import shared as sh
-import sys
+# import sys
 
 audio_dir = 'audio/'
 json_dir = 'json/'
@@ -66,7 +66,7 @@ def radio_play(play_status, json_dir, audio_dir):
         popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
         play_status = True
         print('Started playing')
-        sys.stdout.flush()
+#        sys.stdout.flush()
         time.sleep(0.25)
         return play_status
     else:
