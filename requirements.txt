@@ -6,3 +6,4 @@ extruct==0.6.0
 requests==2.19.1
 pprint==0.1
 pytz==2018.5
+mutagen==1.42.0

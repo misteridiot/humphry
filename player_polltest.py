@@ -7,6 +7,8 @@ import datetime as dt
 import time
 import RPi.GPIO as GPIO
 import shared as sh
+import os
+from mutagen.mp4 import MP4
 # import sys
 
 audio_dir = 'audio_test/'
@@ -20,7 +22,7 @@ def find_audio_file(schedule_dict):
 #    play_file_index = min(schedule_dict, key = time_diff_past_only)
 #    play_file = schedule_dict[play_file_index]['PID']+'.m4a'
     play_file_index = 1
-    play_file = 'testaudio.mp3'
+    play_file = 'test_m4a.m4a'
     return play_file_index, play_file
 
 def find_start_time(schedule_dict, play_file_index):
@@ -45,6 +47,20 @@ def convert_timedelta(duration):
     seconds = (seconds % 60)
     return hours, minutes, seconds
 
+def check_audio_present(audio_dir, play_file, start_time_str):
+    file_path = os.path.join(audio_dir,play_file)
+    if os.path.isfile(file_path): #DO THIS IN FIND_AUDIO_FILE
+        audio = MP4(file_path)
+        audio_length = audio.info.length / 60
+        print("Audio duration="+audio_length+" mins")
+        if start_time_str < audio_dur: #DO THIS IN SAME FUNCTION AS FIND_START_TIME
+            return audio_dir, play_file, start_time_str
+    audio_dir = 'audio_test/'
+    play_file = 'sailing_by.mp3'
+    start_time_str = '00:00:00'
+    return audio_dir, play_file, start_time_str
+
+
 def list_programs(schedule_dict):
 # FOR DEBUGGING: list all progs in schedule_dict to check correct file is being played
     i = 1
@@ -66,6 +82,7 @@ def radio_play(play_status, json_dir, audio_dir):
         print('Found file to play: '+play_file)
         start_time_str = find_start_time(schedule_dict, play_file_index)
         print('Found start time: '+start_time_str)
+        audio_dir, play_file, start_time_str = check_audio_present(audio_dir, play_file, start_time_str)
         popen = subprocess.Popen(['omxplayer', '-o', 'local', audio_dir+play_file, '--pos='+start_time_str], stdout=subprocess.PIPE, universal_newlines=True)
         play_status = True
         print('Started playing')
