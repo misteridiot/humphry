@@ -26,7 +26,7 @@ In /bbc-radio-timeshift install dependencies:
  sudo apt-get install libxml2-dev libxslt-dev python-dev zlib1g-dev python-pip [this is because lxml, a dependency of extruct, needs the development packages of libxml2 and libxslt to be installed]
  sudo apt-get install python-lxml python3-lxml [this is due to the regular pip install of extruct --> lxml hanging. In practice this might just be taking ages to compile, but this method works and is fast]
  pip install -r requirements.txt
-Create audio, json & logs folders: mkdir audio, mkdir json, mkdir logs 
+Create audio, json & logs folders: mkdir audio, mkdir json, mkdir logs
 Install get_iplayer: wget http://packages.hedgerows.org.uk/raspbian/install.sh -O - | sh
 Change timezone to current location: raspi-config
 
@@ -43,5 +43,3 @@ Add in library locations into PYTHONPATH=/dir:/dir:[etc]
         0 * * * * cd /home/pi/bbc-radio-timeshift && /home/pi/bbc-radio-timeshift/main.py  2>&1 | /home/pi/bbc-radio-timeshift/logs/timestamp.sh >> /home/pi/bbc-radio-timeshift/logs/cron.log
 
 Ctrl-X to exit and save
-
-
