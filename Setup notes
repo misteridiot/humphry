@@ -4,7 +4,7 @@ SET UP
 SET UP PI OS
 Download latest image of Raspbian - https://www.raspberrypi.org/downloads/raspbian/
 Use Etcher to burn to SD card
-Edit /etc/wpa_supplicant/wpa_supplicant.conf to include network details:\
+On /root edit /etc/wpa_supplicant/wpa_supplicant.conf to include network details:\
         network={
                ssid="YourNetworkSSID"
                psk="Your Network's Passphrase"
