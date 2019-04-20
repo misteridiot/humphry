@@ -7,6 +7,7 @@ import datetime as dt
 import shared as sh
 import subprocess
 import os
+import logging
 
 def get_record_times(year, month, day, hours_ahead):
 # Set recording start & end times, the UK schedule times between which all radio programs will be downloaded, using CLI args --> REMOVED GIVEN SETTING TIMES FROM MAIN.PY
@@ -54,18 +55,18 @@ def init_download(download_list, audio_dir):
 # Main -->
 def downloader(hours_ahead, audio_dir, json_dir):
     year, month, day = sh.set_date()
-    print('Current date set')
+    logging.debug('Current date set')
 #    rec_start_time = dt.datetime(int(year), int(month), int(day), rec_start_hour, rec_start_min, 0, 0)
 #    rec_end_time = dt.datetime(int(year), int(month), int(day), rec_end_hour, rec_end_min, 0, 0)
     rec_start_time, rec_end_time = get_record_times(year, month, day, hours_ahead)
-    print('Got record times')
+    logging.debug('Got record times')
     raw_schedule_dict = sh.load_json(year, month, day,json_dir)
-    print('JSON imported')
+    logging.debug('JSON imported')
     schedule_dict = sh.convert_dict_dates(raw_schedule_dict)
-    print('Dict times converted: '+str(len(schedule_dict))+' records')
+    logging.debug('Dict times converted: %s records',str(len(schedule_dict)))
     download_list = get_download_list(schedule_dict, rec_start_time, rec_end_time, audio_dir)
-    print('Download list compiled')
+    logging.debug('Download list compiled')
     init_download(download_list, audio_dir)
-    print('Downloads completed')
+    logging.debug('Downloads completed')
     return
 # Check success of downloads?

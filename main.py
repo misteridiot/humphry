@@ -10,7 +10,7 @@ audio_dir = 'audio/'
 json_dir = 'json/'
 hours_ahead = 4
 
-logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(funcName)s %(levelname)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(levelname)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
 
 scraper.scraper(json_dir)
 logging.info("Scraper complete")
