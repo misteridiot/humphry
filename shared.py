@@ -15,7 +15,7 @@ def set_date():
     year = str(dt.date.today().year)
     month = "{0:0=2d}".format(dt.date.today().month)
     day = "{0:0=2d}".format(dt.date.today().day)
-    logging.info("Date set")
+    logging.debug("Date set")
     return year, month, day
 
 def save_json(schedule_dict, year, month, day, json_dir):

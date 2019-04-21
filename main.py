@@ -8,15 +8,19 @@ import logging
 
 audio_dir = 'audio/'
 json_dir = 'json/'
-hours_ahead = 4
+download_hours_ahead = 4
+audio_hours_retain = 12
+json_hours_retain = 48
 
-logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(levelname)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+def main(audio_dir, json_dir, download_hours_ahead, audio_hours_retain, json_hours_retain):
+    logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(levelname)s-%(name)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+    scraper.scraper(json_dir)
+    logging.info("Scraper complete")
+    sh.cleanup(audio_dir, audio_hours_retain)
+    logging.info("Audio cleanup complete")
+    sh.cleanup(json_dir, json_hours_retain)
+    logging.info("JSON cleanup complete")
+    downloader.downloader(download_hours_ahead, audio_dir, json_dir)
+    logging.info("Downloader complete")
 
-scraper.scraper(json_dir)
-logging.info("Scraper complete")
-sh.cleanup(audio_dir,12)
-logging.info("Audio cleanup complete")
-sh.cleanup(json_dir,48)
-logging.info("JSON cleanup complete")
-downloader.downloader(hours_ahead, audio_dir,json_dir)
-logging.info("Downloader complete")
+main(audio_dir, json_dir, download_hours_ahead, audio_hours_retain, json_hours_retain)
