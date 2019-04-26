@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# scraper.py - scraping the BBC R4 schedule to fuel the downloader and player modules of the bbc_r4_ca project
+# scraper.py - scraping the BBC Radio 4 schedule to build a JSON schedule file used by the downloader and player modules
 
 import requests as req
 import extruct

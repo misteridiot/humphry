@@ -9,9 +9,7 @@ import sys
 import logging
 
 def set_date():
-# Get current year, month & day // used to define URL to be scraped
-# and name resulting JSON file, and to set rec start & end times
-
+# Get current year, month & day // used to define URL to be scraped, name resulting JSON file, and to set rec start & end times
     year = str(dt.date.today().year)
     month = "{0:0=2d}".format(dt.date.today().month)
     day = "{0:0=2d}".format(dt.date.today().day)
@@ -19,15 +17,13 @@ def set_date():
     return year, month, day
 
 def save_json(schedule_dict, year, month, day, json_dir):
-# Dump schedule dict as a JSON file named with given date (usu today's date)
-#    global json_dir
+# Dump schedule dict as a JSON file named with given date
     with open(json_dir + year + '-' + month + '-' + day + '.json', 'w') as file:
         json.dump(schedule_dict, file, indent=4, sort_keys=True, separators=(',',': '))
     logging.debug("JSON saved")
 
 def load_json(year, month, day, json_dir):
 # Load JSON schedule file for given date
-#    global json_dir
     filename = json_dir + year + '-' + month + '-' + day + '.json'
     with open(filename) as file:
         raw_schedule_dict = json.load(file)
@@ -43,7 +39,7 @@ def convert_dict_dates(raw_schedule_dict):
     return raw_schedule_dict
 
 def execute(command):
-# Execute subprocess, returning STDOUT line by line to br printed for debugging
+# Execute subprocess, returning STDOUT line by line to be printed for debugging
     popen = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
     for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line
@@ -53,6 +49,7 @@ def execute(command):
         raise subprocess.CalledProcessError(return_code, command)
 
 def cleanup(file_dir,delete_hours):
+# Delete files within a defined folder that are older than a defined number of hours
     now = time.time()
     for file in os.listdir(file_dir):
         file_path = os.path.join(file_dir,file)
