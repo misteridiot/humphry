@@ -74,12 +74,12 @@ We want the Pi to automatically download new audio every hour, and for the playe
 2. Open your root crontab:
 > sudo crontab -e
 
-3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder:
+3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder, using a small shell script to add a timestamp:
 >        PATH=/usr/sbin:/usr/bin:/sbin:/bin
 >        PYTHONPATH=usr/lib/python2.7:usr/lib/python2.7/plat-arm-linux-gnueabihf:usr/lib/python2.7/lib-tk:/home/pi/.local/lib/python2.7/site-packages
 
->        @reboot cd /home/pi/humphry && /home/pi/humphry/player.py 2>&1 | /home/pi/humphry/logs/timestamp.sh >> /home/pi/humphry/logs/cron.log
->        0 * * * * cd /home/pi/humphry && /home/pi/humphry/main.py  2>&1 | /home/pi/humphry/logs/timestamp.sh >> /home/pi/humphry/logs/cron.log
+>        @reboot cd /home/pi/humphry && /home/pi/humphry/player.py 2>&1 | /home/pi/humphry/timestamp.sh >> /home/pi/humphry/logs/cron.log
+>        0 * * * * cd /home/pi/humphry && /home/pi/humphry/main.py  2>&1 | /home/pi/humphry/timestamp.sh >> /home/pi/humphry/logs/cron.log
 
 Once you're done Ctrl-X to exit and save.
 
