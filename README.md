@@ -56,7 +56,7 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 > sudo apt-get install git
 
 2. Create a clone of this git repo:
-> git clone https://github.com/misteridiot/bbc-radio-timeshift.git
+> git clone https://github.com/misteridiot/humphry.git
 
 3. Navigate to /bbc-radio-timeshift, and then create the folders where the audio files, JSON schedule files and logs will be saved:
 > mkdir audio json logs
@@ -78,8 +78,8 @@ We want the Pi to automatically download new audio every hour, and for the playe
 >        PATH=/usr/sbin:/usr/bin:/sbin:/bin
 >        PYTHONPATH=usr/lib/python2.7:usr/lib/python2.7/plat-arm-linux-gnueabihf:usr/lib/python2.7/lib-tk:/home/pi/.local/lib/python2.7/site-packages
 
->        @reboot cd /home/pi/bbc-radio-timeshift && /home/pi/bbc-radio-timeshift/player.py 2>&1 | /home/pi/bbc-radio-timeshift/logs/timestamp.sh >> /home/pi/bbc-radio-timeshift/logs/cron.log
->        0 * * * * cd /home/pi/bbc-radio-timeshift && /home/pi/bbc-radio-timeshift/main.py  2>&1 | /home/pi/bbc-radio-timeshift/logs/timestamp.sh >> /home/pi/bbc-radio-timeshift/logs/cron.log
+>        @reboot cd /home/pi/humphry && /home/pi/humphry/player.py 2>&1 | /home/pi/humphry/logs/timestamp.sh >> /home/pi/humphry/logs/cron.log
+>        0 * * * * cd /home/pi/humphry && /home/pi/humphry/main.py  2>&1 | /home/pi/humphry/logs/timestamp.sh >> /home/pi/humphry/logs/cron.log
 
 Once you're done Ctrl-X to exit and save.
 
