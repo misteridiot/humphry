@@ -1,4 +1,4 @@
-# Shared functions for BBC Radio4 in CA project
+# Shared functions for humphrey
 
 import datetime as dt
 import json

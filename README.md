@@ -1,14 +1,15 @@
-# Humphry - BBC Radio 4 synced to local times
+# Humphry - BBC Radio 4 synced to local time
 
-A project to create a physical radio that plays BBC Radio 4 time-synched to whichever timezone it's in (so long as it's behind the UK).
+A project to create a physical radio that plays BBC Radio 4 time-synced to whichever timezone it's in (so long as it's behind the UK).
 
-Built on a Raspberry Pi, uses get_iplayer and omxplayer to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule and coordinate download and playback.
+Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback.
 
 Note: a first project by a newbie! To help other as new to this as me I include below all setup notes in excruciating detail. I'm assuming you're using a new Pi from scratch.
 
 ## Setting up your Raspberry Pi
 
 1. On your development machine download the [latest image of Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Use [Etcher](https://www.balena.io/etcher/) to burn the image to your SD card.
+
 2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. So in the terminal of your development machine navigate to the /root directory of the SD card, then open the wpa_supplicant.conf file as sudo:
 > sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
@@ -30,10 +31,12 @@ Then exit and save by pressing CTRL+X.
 Then exit and save by pressing CTRL+X.
 
 6. Repeat steps 4 and 5 above for /etc/ssh/sshd_config
+
 7. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So in terminal navigate to the /boot partition and create the file:
 > touch ssh
 
 8. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
+
 9. Give your Pi 30 seconds or so to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi to check it's connected:
 > ping raspberrypi.local
 
@@ -68,6 +71,7 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 
 ## Setting up cron
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
+
 1. First you need to change the permissions on the python scripts to allow cron to execute them:
 > chmod 755 player.py main.py cron_test.py
 
@@ -85,5 +89,7 @@ Once you're done Ctrl-X to exit and save.
 
 # Setting up hardware
 So all that is to get the software running. For the radio to work you'll need your Pi to be connected to two pieces of hardware:
+
 1. An amp and speaker. I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
+
 2. A button. This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
