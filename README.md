@@ -1,4 +1,4 @@
-# Humphry - BBC Radio 4 synced to local time
+# Humphry - BBC Radio 4 synced to local times
 
 A project to create a physical radio that plays BBC Radio 4 time-synched to whichever timezone it's in (so long as it's behind the UK).
 
