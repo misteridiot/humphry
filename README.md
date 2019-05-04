@@ -66,7 +66,7 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 > wget http://packages.hedgerows.org.uk/raspbian/install.sh -O - | sh
 > pip install -r requirements.txt
 
-##Setting up cron
+## Setting up cron
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
 1. First you need to change the permissions on the python scripts to allow cron to execute them:
 > chmod 755 player.py main.py cron_test.py
@@ -83,7 +83,7 @@ We want the Pi to automatically download new audio every hour, and for the playe
 
 Once you're done Ctrl-X to exit and save.
 
-#Setting up hardware
+# Setting up hardware
 So all that is to get the software running. For the radio to work you'll need your Pi to be connected to two pieces of hardware:
 1. An amp and speaker. I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
 2. A button. This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
