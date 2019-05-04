@@ -4,3 +4,9 @@ audio
 __pycache__
 shared.pyc
 *.pyc
+.gitignore
+player_polltest.py
+Setup notes
+wpa_supplicant.conf
+cleanup.py
+BLOG.md
