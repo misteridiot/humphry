@@ -4,7 +4,7 @@ A project to create a physical radio that plays BBC Radio 4 time-synced to which
 
 Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback.
 
-Note: a first project by a newbie! To help other as new to this as me I include below all setup notes in excruciating detail. I'm assuming you're using a new Pi from scratch.
+Note: a first project by a newbie! To help others as new to this as me I include below all setup notes in excruciating detail. I'm assuming you're using a new Pi from scratch.
 
 ## Setting up your Raspberry Pi
 

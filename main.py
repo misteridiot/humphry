@@ -11,7 +11,7 @@ json_dir = 'json/'
 download_hours_ahead = 4
 audio_hours_retain = 12
 json_hours_retain = 48
-logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(levelname)s-%(module)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+logging.basicConfig(filename='logs/pythonlog.log', format='%(asctime)s %(levelname)s-%(module)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
 
 def main(audio_dir, json_dir, download_hours_ahead, audio_hours_retain, json_hours_retain):
     scraper.scraper(json_dir)
