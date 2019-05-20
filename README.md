@@ -73,7 +73,7 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
 
 1. First you need to change the permissions on the python scripts to allow cron to execute them:
-> chmod 755 player.py main.py cron_test.py
+> chmod 755 player.py main.py
 
 2. Open your root crontab:
 > sudo crontab -e

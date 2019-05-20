@@ -14,7 +14,7 @@ json_dir = 'json/'
 schedule_dict = {}
 switch_pin = 18
 play_status = False
-logging.basicConfig(filename='logging_test.log', format='%(asctime)s %(levelname)s-%(module)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+logging.basicConfig(filename='logs/pythonlog.log', format='%(asctime)s %(levelname)s-%(module)s-%(funcName)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
 
 def find_audio_file(schedule_dict):
 # Find the right audio file to play
