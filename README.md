@@ -70,6 +70,8 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 > sudo pip install -r requirements.txt
 > sudo apt-get upgrade
 
+To be honest when testing out this setup I've found the installation of dependencies to be a bit bumpy, requiring certain of them to be individually re-installed. Someone with more experience than me will no doubt point out where I'm going wrong. But still, I've always managed to get it working.
+
 ## Setting up cron
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
 
