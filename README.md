@@ -10,47 +10,46 @@ Note: a first project by a newbie! To help others as new to this as me I include
 
 1. On your development machine download the [latest image of Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Use [Etcher](https://www.balena.io/etcher/) to burn the image to your SD card.
 
-2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. So in the terminal of your development machine navigate to the /root directory of the SD card, then open the wpa_supplicant.conf file as sudo:
-> sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. To achieve this, first navigate to the /boot directory of the SD card in the terminal of your development machine, then open a new empty file called wpa_supplicant.conf:
+> nano wpa_supplicant.conf
 
-3. Add your wifi network details to the file (note you can add multiple networks):
+3. Paste in the following, substituting the placeholders for your own wifi network name and password:
 >        network={
 >               ssid="YourNetworkSSID"
 >               psk="Your Network's Passphrase"
 >               key_mgmt=WPA-PSK
 >        }
+>
+> ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+> update_config=1
 
-Then exit and save by pressing CTRL+X.
+Then pressing CTRL+X to exit and save in the /boot directory.
 
-4. I've found that SSH hangs unless you add a line to /etc/ssh/ssh_config and /etc/ssh/sshd_config. So open the first of them as sudo:
-> sudo nano /etc/ssh/ssh_config
-
-5. Add the following line to the bottom of the configuration file:
-> IPQoS 0x00
-
-Then exit and save by pressing CTRL+X.
-
-6. Repeat steps 4 and 5 above for /etc/ssh/sshd_config
-
-7. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So in terminal navigate to the /boot partition and create the file:
+4. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So whilst still in the /boot directory enter the following into your terminal:
 > touch ssh
 
-8. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
+If you look at your /boot folder you should now see ssh and wpa_supplicant.conf files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions - so you'll need to recreate them if something goes awry.
 
-9. Give your Pi 30 seconds or so to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi to check it's connected:
+5. If you're using a Linux development machine, I've found that SSH into the Pi hangs unless you also add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo:
+> IPQoS 0x00
+
+6. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
+
+7. Give your Pi 15-30 seconds to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi from your development machine's terminal to check it's connected:
 > ping raspberrypi.local
 
 It should return a ping every second or so. Stop it with CTRL+C.
-10. Now you can remotely log in to your Pi via SSH:
+
+8. Now you can remotely log in to your Pi via SSH from your development machine:
 > ssh pi@raspberrypi.local
 
 When prompted for a password, the default is _raspberry_
 
-11. Once logged in change it immediately to something secure:
+9. Once logged in immediately change your Pi's password to something secure:
 > passwd
 
-12. Finally, change the Pi's timezone to match your current location on the Pi's configuration dashboard:
-> raspi-config
+10. Finally, change the Pi's timezone to match your current location on the Pi's configuration dashboard:
+> sudo raspi-config
 
 ## Installing dependencies
 Assuming you installed Raspbian Lite we need to install a bunch of stuff on your Pi.
@@ -61,13 +60,15 @@ Assuming you installed Raspbian Lite we need to install a bunch of stuff on your
 2. Create a clone of this git repo:
 > git clone https://github.com/misteridiot/humphry.git
 
-3. Navigate to /bbc-radio-timeshift, and then create the folders where the audio files, JSON schedule files and logs will be saved:
+3. Navigate to /humphry, and then create the folders where the audio files, JSON schedule files and logs will be saved:
+> cd humphry
 > mkdir audio json logs
 
 4. Now install dependencies. Except the requirements file, get_iplayer and omxplayer these are due to weird needs of one module, extruct, so I'll hopefully replace it with something more lightweight in future:
-> sudo apt-get install libxml2-dev libxslt-dev python-dev zlib1g-dev python-pip python-lxml python3-lxml omxplayer
+> sudo apt-get install libxml2-dev libxslt-dev python-dev zlib1g-dev python-pip python3-pip python-lxml python3-lxml omxplayer
 > wget http://packages.hedgerows.org.uk/raspbian/install.sh -O - | sh
-> pip install -r requirements.txt
+> sudo pip install -r requirements.txt
+> sudo apt-get upgrade
 
 ## Setting up cron
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
@@ -92,4 +93,4 @@ So all that is to get the software running. For the radio to work you'll need yo
 
 1. An amp and speaker. I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
 
-2. A button. This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).s
+2. A button. This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
