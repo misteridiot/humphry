@@ -16,7 +16,7 @@ Note: a first project by a newbie! To help others as new to this as me I include
 $ nano wpa_supplicant.conf
 ```
 
-3. Paste in the following, substituting the placeholders for your own wifi network name and password:
+3. Paste in the following, substituting the placeholders for your own wifi network name and password. When you're done press CTRL+X to exit and save in the /boot directory.
 
 ```
 network={
@@ -29,31 +29,28 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 ```
 
-Then pressing CTRL+X to exit and save in the /boot directory.
-
-4. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So whilst still in the /boot directory enter into your terminal:
+4. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So whilst still in the /boot directory enter the following into your terminal.
 ```
 $ touch ssh
 ```
 
-If you look at your /boot folder you should now see ssh and wpa_supplicant.conf files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions, so don't be weirded out.
+5. If you look at your /boot folder you should now see ssh and wpa_supplicant.conf files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions, so don't be weirded out.
 
-5. If you're using a Linux development machine, I've found that SSH into the Pi hangs unless you also add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo: `IPQoS 0x00`
+6. If you're using a Linux development machine, I've found that SSH into the Pi hangs unless you also add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo: `IPQoS 0x00`
 
-6. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
+7. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
 
-7. Give your Pi 15-30 seconds to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi from your development machine's terminal to check it's connected:
+8. Give your Pi 15-30 seconds to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi from your development machine's terminal to check it's connected. It should return a ping every second or so. Stop it with CTRL+C.
+
+```
 $ ping raspberrypi.local
+```
 
-It should return a ping every second or so. Stop it with CTRL+C.
-
-8. Now you can remotely log in to your Pi via SSH from your development machine:
+8. Now you can remotely log in to your Pi via SSH from your development machine. When prompted for a password, the default is *raspberry*.
 
 ```
 $ ssh pi@raspberrypi.local
 ```
-
-When prompted for a password, the default is *raspberry*
 
 9. Once logged in immediately change your Pi's password to something secure:
 
@@ -84,7 +81,7 @@ $ cd humphry
 $ mkdir audio json logs
 ```
 
-4. Now install dependencies. Except the requirements file, get_iplayer and omxplayer these are due to weird needs of one module, extruct, so I'll hopefully replace it with something more lightweight in future:
+4. Now install dependencies. Except the requirements file, get_iplayer and omxplayer these are due to weird needs of one module, extruct, so I'll hopefully replace it with something more lightweight in future. I've found the installation of dependencies to be a bit bumpy, with some requiring individual re-installation. Someone smarter than me will no doubt point out why. But some form of the following has always worked eventually.
 
 ```
 $ sudo apt-get install libxml2-dev libxslt-dev python-dev zlib1g-dev python-pip python3-pip python-lxml python3-lxml omxplayer
@@ -92,8 +89,6 @@ $ wget http://packages.hedgerows.org.uk/raspbian/install.sh -O - | sh
 $ sudo pip install -r requirements.txt
 $ sudo apt-get upgrade
 ```
-
-To be honest when testing out this setup I've found the installation of dependencies to be a bit bumpy, requiring certain of them to be individually re-installed. Someone with more experience than me will no doubt point out where I'm going wrong. But still, I've always managed to get it working.
 
 ## Setting up cron
 We want the Pi to automatically download new audio every hour, and for the player script to be running in the background as soon as the Pi boots up. To achieve this we use cron.
