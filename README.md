@@ -12,13 +12,13 @@ Note: a first project by a newbie! To help others as new to this as me I include
 
 2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. To achieve this, first navigate to the /boot directory of the SD card in the terminal of your development machine, then open a new empty file called wpa_supplicant.conf:
 
-```
+```bash
 $ nano wpa_supplicant.conf
 ```
 
 3. Paste in the following, substituting the placeholders for your own wifi network name and password. When you're done press CTRL+X to exit and save in the /boot directory.
 
-```
+```bash
 network={
        ssid="YourNetworkSSID"
        psk="Your Network's Passphrase"
@@ -36,17 +36,17 @@ $ touch ssh
 
 5. If you look at your /boot folder you should now see ssh and wpa_supplicant.conf files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions, so don't be weirded out.
 
-6. If you're using a Linux development machine, I've found that SSH into the Pi hangs unless you also add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo: `IPQoS 0x00`
+6. If you're using a Linux development machine, I've found that one extra step is needed to stop SSH hanging. Add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo: `IPQoS 0x00`
 
 7. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
 
-8. Give your Pi 15-30 seconds to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi from your development machine's terminal to check it's connected. It should return a ping every second or so. Stop it with CTRL+C.
+8. Give your Pi 15-30 seconds to connect to wifi. Then, with your development machine connected to the same wifi network, ping the Pi from your development machine's terminal to check it's connected. It should return a ping every second or so.
 
 ```
 $ ping raspberrypi.local
 ```
 
-8. Now you can remotely log in to your Pi via SSH from your development machine. When prompted for a password, the default is *raspberry*.
+8. Stop the pings with CTRL+C. Now you can remotely log in to your Pi via SSH from your development machine. When prompted for a password, the default is *raspberry*.
 
 ```
 $ ssh pi@raspberrypi.local
@@ -100,11 +100,12 @@ $ chmod 755 player.py main.py
 ```
 
 2. Open your root crontab:
+
 ```
 $ sudo crontab -e
 ```
 
-3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me, I know they're all over the place), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder, using a small shell script to add a timestamp:
+3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me, I know they're all over the place), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder, using a small shell script to add a timestamp. Once you're done Ctrl-X to exit and save.
 
 ```
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
@@ -113,8 +114,6 @@ PYTHONPATH=usr/lib/python2.7:usr/lib/python2.7/plat-arm-linux-gnueabihf:usr/lib/
 @reboot cd /home/pi/humphry && /home/pi/humphry/player.py 2>&1 | /home/pi/humphry/timestamp.sh >> /home/pi/humphry/logs/cron.log
 0 * * * * cd /home/pi/humphry && /home/pi/humphry/main.py  2>&1 | /home/pi/humphry/timestamp.sh >> /home/pi/humphry/logs/cron.log
 ```
-
-Once you're done Ctrl-X to exit and save.
 
 ## Setting up hardware
 So all that is to get the software running. For the radio to work you'll need your Pi to be connected to two pieces of hardware:
