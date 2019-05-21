@@ -1,5 +1,7 @@
 # Humphry - BBC Radio 4 synced to local time
 
+![Image of Humphry - BBC Radio 4 Raspberry Pi project](https://cdn-images-1.medium.com/max/800/1*WlzYdbyiyE02ohjbuauXdQ.jpeg)
+
 A project to create a physical radio that plays BBC Radio 4 time-synced to whichever timezone it's in (so long as it's behind the UK).
 
 Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback. [Here's the story behind this project](https://medium.com/@phames/humphry-bbc-radio-4-synced-to-us-local-time-11354249042), including hardware instructions.
