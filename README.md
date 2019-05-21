@@ -4,21 +4,21 @@ A project to create a physical radio that plays BBC Radio 4 time-synced to which
 
 Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback.
 
-Note: a first project by a newbie! To help others as new to this as me I include below all setup notes in excruciating detail. I'm assuming you're using a new Pi from scratch.
+Note: this is my first Python project! To help others as new to this as me I include below all setup notes in excruciating detail. Please excuse any errors or omissions. I'm assuming you're using a new Pi from scratch.
 
 ## Setting up your Raspberry Pi
 
 1. On your development machine download the [latest image of Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Use [Etcher](https://www.balena.io/etcher/) to burn the image to your SD card.
 
-2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. To achieve this, first navigate to the /boot directory of the SD card in the terminal of your development machine, then open a new empty file called wpa_supplicant.conf:
+2. Since you'll be using your Pi "headless" (i.e. without a monitor connected) you'll need it to auto-connect to your wifi on startup, and then you'll log into it remotely from your development machine via SSH. To achieve this, first navigate to the `/boot` directory of the SD card in the terminal of your development machine, then open a new empty file called `wpa_supplicant.conf`:
 
-```bash
+```
 $ nano wpa_supplicant.conf
 ```
 
-3. Paste in the following, substituting the placeholders for your own wifi network name and password. When you're done press CTRL+X to exit and save in the /boot directory.
+3. Paste in the following, substituting the placeholders for your own wifi network name and password. When you're done press CTRL+X to exit and save in the `/boot` directory.
 
-```bash
+```
 network={
        ssid="YourNetworkSSID"
        psk="Your Network's Passphrase"
@@ -29,14 +29,15 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 ```
 
-4. To tell your Pi to allow SSH you need to create an empty file called "ssh" in the top directory of your boot partition. So whilst still in the /boot directory enter the following into your terminal.
+4. To tell your Pi to allow SSH you need to create an empty file called `ssh` in the top directory of your boot partition. So whilst still in the `/boot` directory enter the following into your terminal.
+
 ```
 $ touch ssh
 ```
 
-5. If you look at your /boot folder you should now see ssh and wpa_supplicant.conf files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions, so don't be weirded out.
+5. If you look at your /boot folder you should now see `ssh` and `wpa_supplicant.conf` files. Note that these will both disappear after the first time you plug in your Pi - they act like one-time configuration instructions, so don't be weirded out.
 
-6. If you're using a Linux development machine, I've found that one extra step is needed to stop SSH hanging. Add the following line to the bottom of both /etc/ssh/ssh_config and /etc/ssh/sshd_config using nano as sudo: `IPQoS 0x00`
+6. If you're using a Linux development machine, I've found that one extra step is needed to stop SSH hanging. Add the following line to the bottom of both `/etc/ssh/ssh_config` and `/etc/ssh/sshd_config` using nano as sudo: `IPQoS 0x00`
 
 7. Now you're ready to start up your Pi. Insert the SD card into Pi and connect it to power. The red power light should be on, and the green activity light should flash a bit.
 
@@ -74,14 +75,14 @@ $ sudo apt-get install git
 $ git clone https://github.com/misteridiot/humphry.git
 ```
 
-3. Navigate to /humphry, and then create the folders where the audio files, JSON schedule files and logs will be saved:
+2. Navigate to `/humphry`, and then create the folders where the audio files, JSON schedule files and logs will be saved:
 
 ```
 $ cd humphry
 $ mkdir audio json logs
 ```
 
-4. Now install dependencies. Except the requirements file, get_iplayer and omxplayer these are due to weird needs of one module, extruct, so I'll hopefully replace it with something more lightweight in future. I've found the installation of dependencies to be a bit bumpy, with some requiring individual re-installation. Someone smarter than me will no doubt point out why. But some form of the following has always worked eventually.
+3. Now install dependencies. Except the requirements file, get_iplayer and omxplayer these are due to weird needs of one module, extruct, so I'll hopefully replace it with something more lightweight in future. I've found the installation of dependencies to be a bit bumpy, with some requiring individual re-installation. Someone smarter than me will no doubt point out why. But some form of the following has always worked eventually.
 
 ```
 $ sudo apt-get install libxml2-dev libxslt-dev python-dev zlib1g-dev python-pip python3-pip python-lxml python3-lxml omxplayer
