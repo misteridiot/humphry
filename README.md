@@ -2,11 +2,13 @@
 
 A project to create a physical radio that plays BBC Radio 4 time-synced to whichever timezone it's in (so long as it's behind the UK).
 
-Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback.
+Built on a Raspberry Pi, uses [get_iplayer](https://github.com/get-iplayer/get_iplayer) and [omxplayer](https://github.com/popcornmix/omxplayer) to download and play the audio respectively, Python scripts scheduled by cron to grab today's schedule from the BBC website, coordinate download and playback. (Here's the story behind this project)[https://medium.com/@phames/humphry-bbc-radio-4-synced-to-us-local-time-11354249042].
 
-Note: this is my first Python project! To help others as new to this as me I include below all setup notes in excruciating detail. Please excuse any errors or omissions. I'm assuming you're using a new Pi from scratch.
+Note: this is my first Python project! To help others as new to this as me I include below all setup notes in excruciating detail. Please excuse any errors or omissions.
 
 ## Setting up your Raspberry Pi
+
+I'm going to assume you're using a new Pi from scratch.
 
 1. On your development machine download the [latest image of Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Use [Etcher](https://www.balena.io/etcher/) to burn the image to your SD card.
 
@@ -119,6 +121,8 @@ PYTHONPATH=usr/lib/python2.7:usr/lib/python2.7/plat-arm-linux-gnueabihf:usr/lib/
 ## Setting up hardware
 So all that is to get the software running. For the radio to work you'll need your Pi to be connected to two pieces of hardware:
 
-**1. An amp and speaker.** I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
+1. **An amp and speaker.** I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
 
-**2. A button.** This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
+2. **A button.** This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
+
+To learn about my personal setup take a look at [this Medium post](https://medium.com/@phames/humphry-bbc-radio-4-synced-to-us-local-time-11354249042).
