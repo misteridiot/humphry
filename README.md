@@ -75,7 +75,7 @@ $ sudo apt-get install git
 $ git clone https://github.com/misteridiot/humphry.git
 ```
 
-2. Navigate to `/humphry`, and then create the folders where the audio files, JSON schedule files and logs will be saved:
+2. Change directory to `/humphry`, and then create the folders where the audio files, JSON schedule files and logs will be saved:
 
 ```
 $ cd humphry
@@ -106,7 +106,7 @@ $ chmod 755 player.py main.py
 $ sudo crontab -e
 ```
 
-3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me, I know they're all over the place), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder, using a small shell script to add a timestamp. Once you're done Ctrl-X to exit and save.
+3. At the bottom of the file add the following. Since cron is not context aware you need to tell it where all everything is. Under PYTHONPATH I've included the locations of all my Python packages (don't judge me, I know they're all over the place), you need to edit that to match where yours are (or you know, just try the below). The two cron jobs included run the player script on boot, and the main python script (that cleans up old files and downloads new ones) once an hour. Both processes will send logs to cron.log in your logs folder, using a small shell script to add a timestamp. Once you're done CTRL-X to exit and save.
 
 ```
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
@@ -119,6 +119,6 @@ PYTHONPATH=usr/lib/python2.7:usr/lib/python2.7/plat-arm-linux-gnueabihf:usr/lib/
 ## Setting up hardware
 So all that is to get the software running. For the radio to work you'll need your Pi to be connected to two pieces of hardware:
 
-1. An amp and speaker. I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
+**1. An amp and speaker.** I built my own setup from individual parts but assuming you're using a Pi with a regular 3.5m headphone jack audio output, you can connect any regular powered speaker to it.
 
-2. A button. This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
+**2. A button.** This is to toggle the radio on and off. By default it needs to be connected between GPIO pin 18 and any ground pin (I use one right next to it).
